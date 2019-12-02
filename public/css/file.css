@@ -1,0 +1,35 @@
+.img {
+	width: 100px;
+	height: 100px;
+	background-color: gray;
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.fileInfo {
+	display: inline-block;
+	text-align: left;
+	vertical-align: top;
+	list-style-type: none;
+	margin: 0px;
+	margin-left: -40px;
+}
+
+.fileBlock {
+	display: inline-block;
+	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
+	padding: 40px;
+}
+
+.uploadButton {
+	display: block;
+	width: 100px;
+	padding: 10px;
+	background-color: rgb(240,240,240);
+	text-decoration: none;
+	color: black;
+	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
+	margin-top: 25px;
+	margin-left: auto;
+	margin-right: auto;
+}
