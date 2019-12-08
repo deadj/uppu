@@ -1,6 +1,6 @@
 <?php
 
-class File
+class MainController
 {
 	private $view;
 	private $response;
@@ -11,9 +11,9 @@ class File
 		$this->response = $response;
 	}
 
-	public function printPage(int $fileId)
+	public function printPage()
 	{
-		$this->response = $this->view->render($this->response, 'file.phtml');
+		$this->response = $this->view->render($this->response, 'main.phtml');
 		return $this->response;
 	}
 }
