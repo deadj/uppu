@@ -1,24 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Uppu</title>
-	<link rel="stylesheet" href="/public/css/main.css">
-	<link rel="stylesheet" href="/public/css/file.css">
-</head>
-<body>
-	<header>
-		<h1>Uppu</h1>
-	</header>
-	<div class="fileBlock">
-		<div class="img"></div>
-		<ul class="fileInfo">
-			<li>Название: Изображениеяхпизе павп</li>
-			<li>Размер: 12 мб</li>
-			<li>Дата загрузки: 12:00 12.02.19</li>
-			<li>Комментарий: Загрузил ...</li>
-		</ul>
-		<a class="uploadButton" href="link.file">Скачать</a>
-	</div>
+{% include "DuplicateItems/header.phtml" %}
+    <div class="fileBlock">
+        <img src="{{ link }}" alt="">
+        <ul class="fileInfo">
+            <li>Название: {{ name }}</li>
+            {% if size <= 1000 %}
+                <li>Размер: {{ size }} Кб.</li>
+            {% else %}
+                <li>Размер: {{ size / 1000}} Мб.</li>
+            {% endif %}
+            <li>Дата загрузки: {{ date }}</li>
+            <li>Комментарий: {{comment }}</li>
+        </ul>
+        <a class="uploadButton" href="storage.yandexcloud.net/beta.ardata.public/pro/video/pro5e413d89b75db.mp4" download="video.mp4">Скачать</a>
+    </div>
 </body>
 </html>

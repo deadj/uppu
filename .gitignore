@@ -1,4 +1,5 @@
 init.ini
-vendor/
-phpmyadmin/
 composer.lock
+vendor/
+public/files/
+
