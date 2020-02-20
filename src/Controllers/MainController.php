@@ -45,8 +45,9 @@ class MainController
             $name = strval(trim($_POST['name']));
             $comment = trim(mb_substr(strval($_POST['comment']), 0, 30));
             $date = date("Y-m-d H:i:s");
-            $type = preg_replace('/.*[.]/', '', $uploadedFile->getClientFilename());
-            $link = $folderPath . "/" . $nameId . '.' . $type;
+            $type = preg_replace('/\\/\\w*/', '', $uploadedFile->getClientMediaType());
+            // $type = $uploadedFile->getClientMediaType();
+            $link = $folderPath . "/" . $nameId . '.' . preg_replace('/.*[.]/', '', $uploadedFile->getClientFilename());
             $size = $uploadedFile->getSize() / 1000;
 
             $file = new File($nameId, $name, $link, $comment, $type, $date, $size);
@@ -71,6 +72,6 @@ class MainController
 
         $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
-        return preg_replace('/[.][a-z]*/', '', $filename);
+        return preg_replace('/[.].*/', '', $filename);
     }
 }

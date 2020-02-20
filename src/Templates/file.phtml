@@ -1,17 +1,18 @@
 {% include "DuplicateItems/header.phtml" %}
     <div class="fileBlock">
-        <img src="{{ link }}" alt="">
+        {% if type == "video" %}
+            <video src="{{ link }}" width="350" controls></video>
+        {% elseif type == "audio" %}
+            <audio src="{{ link }}" controls></audio>
+        {% elseif type == "image" %}
+            <img src="{{ link }}">
+        {% endif %}
         <ul class="fileInfo">
-            <li>Название: {{ name }}</li>
-            {% if size <= 1000 %}
-                <li>Размер: {{ size }} Кб.</li>
-            {% else %}
-                <li>Размер: {{ size / 1000}} Мб.</li>
-            {% endif %}
-            <li>Дата загрузки: {{ date }}</li>
-            <li>Комментарий: {{comment }}</li>
+            {% for key, data in fileData %}
+                <li>{{ key }}: {{ data }}</li>                
+            {% endfor %}
         </ul>
-        <a class="uploadButton" href="storage.yandexcloud.net/beta.ardata.public/pro/video/pro5e413d89b75db.mp4" download="video.mp4">Скачать</a>
+        <a class="uploadButton" href="{{ link }}" download="">Скачать</a>
     </div>
 </body>
 </html>
