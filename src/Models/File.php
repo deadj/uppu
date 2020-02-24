@@ -10,9 +10,18 @@ class File
     private $type;
     private $date;
     private $size;
+    private $metadata;
 
-    public function __construct(string $nameId, string $name, string $link, string $comment, string $type, string $date, int $size)
-    {
+    public function __construct(
+        string $nameId, 
+        string $name, 
+        string $link, 
+        string $comment, 
+        string $type, 
+        string $date, 
+        int $size, 
+        array $metadata
+    ){
         $this->nameId = $nameId;
         $this->name = $name;
         $this->link = $link;
@@ -20,6 +29,7 @@ class File
         $this->type = $type;
         $this->date = $date;
         $this->size = $size;
+        $this->metadata = $metadata;
     }
 
     public function getNameId(): string
@@ -60,6 +70,11 @@ class File
     public function getSize(): int
     {
         return $this->size;
+    }
+
+    public function getMetadata(): array
+    {
+        return $this->metadata;
     }
 
 }

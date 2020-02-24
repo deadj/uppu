@@ -5,11 +5,20 @@
         {% elseif type == "audio" %}
             <audio src="{{ link }}" controls></audio>
         {% elseif type == "image" %}
-            <img src="{{ link }}">
+            <img id="imgFile" src="{{ link }}">
         {% endif %}
         <ul class="fileInfo">
-            {% for key, data in fileData %}
-                <li>{{ key }}: {{ data }}</li>                
+            <li>Название: {{ name }}</li>
+            {% if size <= 1000 %}
+                <li>Размер: {{ size }} Кб.</li>
+            {% else %}
+                <li>Размер: {{ size / 1000}} Мб.</li>
+            {% endif %}
+            <li>Дата загрузки: {{ date }}</li>
+            <li>Комментарий: {{comment }}</li>
+
+            {% for data in metadata %}
+                <li>{{ data.dataName }}: {{ data.value }}</li>
             {% endfor %}
         </ul>
         <a class="uploadButton" href="{{ link }}" download="">Скачать</a>

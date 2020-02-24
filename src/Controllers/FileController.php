@@ -27,35 +27,14 @@ class FileController
 	{
 		$file = $this->filesTable->getFile($nameId);
 
-		$fileData = array('Название' => $file->getName());
-
-		if (preg_match('/video/', $file->getType())) {
-			$getID3 = new getID3;
-			$videoData = $getID3->analyze($file->getLink());
-
-			$fileData['Ширина'] = $videoData['video']['resolution_x'];
-			$fileData['Высота'] = $videoData['video']['resolution_y'];
-			$fileData['Кадр/сек'] = $videoData['video']['frame_rate']; 
-		} elseif (preg_match('/audio/', $file->getType())) {
-			$getID3 = new getID3;
-			$videoData = $getID3->analyze($file->getLink());
-
-			$fileData['Битрейт'] = $videoData['audio']['bitrate'] / 1000;
-		}
-
-		if ($file->getSize() <= 1000) {
-			$fileData['Размер'] = strval($file->getSize()) . " Кб.";
-		} else {
-			$fileData['Размер'] = strval($file->getSize() / 1000) . " Мб.";
-		}
-
-		$fileData['Дата'] = $file->getDate();
-		$fileData['Комментарий'] = $file->getComment();
-
 		return $this->twig->render($this->response, 'file.phtml', [
+			'name' => $file->getName(),
+			'link' => $file->getLink(),
+			'comment' => $file->getComment(),
+			'date' => $file->getDate(),
 			'type' => $file->getType(),
-			'fileData' => $fileData,
-			'link' => $file->getLink() 
+			'size' => $file->getSize(),
+			'metadata' => $file->getMetadata()
 		]);
 	}
 

@@ -23,8 +23,25 @@ class FilesTable
 
     public function addFile(File $file): void
     {
-        $statement = $this->pdo->prepare("INSERT INTO files (nameId, name, link, comment, type, date, size) "
-                . "VALUES (:nameId, :name, :link, :comment, :type, :date, :size)");
+        $statement = $this->pdo->prepare("INSERT INTO files (
+            nameId, 
+            name, 
+            link, 
+            comment, 
+            type, 
+            date, 
+            size,
+            metadata
+        ) VALUES (
+            :nameId, 
+            :name, 
+            :link, 
+            :comment, 
+            :type, 
+            :date, 
+            :size,
+            :metadata
+        )");
 
         $statement->bindValue(':nameId', $file->getNameId());
         $statement->bindValue(':name', $file->getName());
@@ -33,6 +50,7 @@ class FilesTable
         $statement->bindValue(':type', $file->getType());
         $statement->bindValue(':date', $file->getDate());
         $statement->bindValue(':size', $file->getSize());
+        $statement->bindValue(':metadata', json_encode($file->getMetadata()));
 
         $statement->execute();
     }
@@ -51,7 +69,7 @@ class FilesTable
         return $filesList;
     }
 
-    private function createFile(object $row): File
+    private function createFile(object $row)
     {
         $file = new File(
             $row->nameId,
@@ -60,9 +78,15 @@ class FilesTable
             $row->comment,
             $row->type,
             $row->date,
-            $row->size
+            $row->size,
+            json_decode($row->metadata)
         );
 
         return $file;       
+    }
+
+    public function addRow(): void
+    {
+        
     }
 }
