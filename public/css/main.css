@@ -7,7 +7,7 @@ html, body {
 header {
 	background-color: rgb(56,130,255);
 	text-align: center;
-	padding: 15px;
+	padding: 30px;
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
 	margin-bottom: 50px;
 }
@@ -17,7 +17,9 @@ header h1 {
 	padding: 0px;
 	color: white;
 	display: inline-block;
-	margin-left: 223px;
+	width: 225px;
+	float: left;
+	text-align: left;
 }
 
 header h3 {
@@ -27,6 +29,7 @@ header h3 {
 	margin: 0px;
 	margin-top: 10px;
 	padding: 0px;
+	width: 225px;
 }
 
 header a {
@@ -39,7 +42,7 @@ footer {
 	display: block;
 }
 
-form {
+form:not(.searchBlock) {
 	margin-top: 150px;
 	display: inline-block;
 	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
@@ -71,5 +74,24 @@ input[type="text"] {
 input[type="file"] {
 	box-shadow: none;
 	margin-bottom: 10px;
+}
+
+
+.searchBlock {
+	display: inline-block;
+	/*float: right;*/
+	margin-top: -5px;
+}
+
+.searchBlock input[type="text"] {
+	display: inline-block;
+	width: 250px;
+}
+
+.searchBlock input[type="submit"] {
+	display: inline-block;
+	width: 70px;
+	margin: 0px;
+	/*padding: 10px;*/
 }
 

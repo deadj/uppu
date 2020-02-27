@@ -23,7 +23,7 @@ class FileController
 		$this->filesTable = new FilesTable($db);
 	}
 
-	public function printPage(string $nameId)
+	public function printPage(string $nameId): Response
 	{
 		$file = $this->filesTable->getFile($nameId);
 

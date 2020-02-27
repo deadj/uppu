@@ -1,0 +1,68 @@
+source base
+{
+    type            = mysql
+    sql_host        = localhost
+    sql_user        = 
+    sql_pass        = 
+    sql_db          = 
+    sql_port        = 3306 
+
+    sql_query_pre                   = SET NAMES utf8
+}
+
+source src_files: base
+{  
+    sql_query       = \
+        SELECT id, nameId, name, link, comment, type, UNIX_TIMESTAMP(date) AS date, size, metadata \
+        FROM files
+}
+
+index index_files
+{
+    source = src_files
+    path == /PATH/DATA
+    docinfo = extern
+    charset_type = utf-8
+}
+
+index rt_files
+{
+    type = rt
+    path ==  /PATH/DATA
+
+    rt_field = nameId
+    rt_field = name
+    rt_field = comment
+
+    rt_attr_string    = link
+    rt_attr_string    = type
+    rt_attr_timestamp = date
+    rt_attr_uint      = size
+    rt_attr_json      = metadata
+
+    rt_mem_limit = 32M
+}
+
+indexer
+{
+    mem_limit = 32M
+}
+
+searchd
+{
+    listen = 9312
+    listen  = 9306:mysql41
+
+    log ==  /PATH/LOG/searchd.log
+    query_log ==  LOG/query.log
+
+    read_timeout = 5
+    max_children = 30
+    pid_file ==  LOG/searchd.pid
+    max_matches = 1000
+    seamless_rotate = 1
+    preopen_indexes = 1
+    unlink_old = 1
+    workers = threads # for RT to work
+    binlog_path ==  data
+}

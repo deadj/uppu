@@ -2,3 +2,5 @@ init.ini
 composer.lock
 vendor/
 public/files/
+sphinx/
+sphinx.conf

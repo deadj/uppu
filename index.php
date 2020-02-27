@@ -18,9 +18,14 @@ $container['view'] = function ($container) {
 
 $container['db'] = include('src/dbConnect.php');
 
+$app->get('/search', function(Request $request, Response $response){
+    $searchController = new SearchController($this->view, $request, $response, $this->db);
+    $searchController->search();
+});
+
 $app->get('/', function(Request $request, Response $response) {
     $mainController = new MainController($this->view, $request, $response, $this->db);
-    $mainController->printPage();
+    $mainController->printPage(); 
 });
 
 $app->get('/list', function(Request $request, Response $response){
@@ -37,6 +42,7 @@ $app->post('/', function(Request $request, Response $response){
     $mainController = new MainController($this->view, $request, $response, $this->db);
     $mainController->uploadFile();
 });
+
 
 
 $app->run();
