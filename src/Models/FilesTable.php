@@ -31,7 +31,7 @@ class FilesTable
         return $this->createFile($result);
     }
 
-    public function addFile(File $file): void
+    public function addFile(File $file): int
     {
         $statement = $this->pdo->prepare("INSERT INTO files (
             nameId, 
@@ -63,12 +63,19 @@ class FilesTable
         $statement->bindValue(':metadata', json_encode($file->getMetadata()));
 
         $statement->execute();
+
+        $statement = $this->pdo->prepare("SELECT id FROM files WHERE nameId = :nameId");
+        $statement->bindValue(':nameId', $file->getNameId());
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return $result->id;
     }
 
     public function getFilesList(): array
     {
         $statement = $this->pdo->prepare("SELECT * FROM files ORDER BY date DESC LIMIT 100");
-        $statement->execute();;
+        $statement->execute();
 
         $filesList = array();
 
@@ -78,8 +85,6 @@ class FilesTable
 
         return $filesList;
     }
-
-    // public function getFilesList
 
     private function createFile(object $row)
     {

@@ -33,8 +33,6 @@ class SearchController
 		$filesId = $this->sphinxSearch->search($this->request->getParam('text'));
 		$filesArray = array();
 
-		// var_dump($filesId);
-
 		if (!empty($filesId)) {
 			foreach ($filesId as $id) {
 				$filesArray[] = $this->filesTable->getFileThroughId(intval($id));

@@ -24,4 +24,42 @@ class SphinxSearch
 
 		return $filesId;
 	}
+
+	public function add(int $id, File $file): void
+	{
+
+		$statement = $this->pdo->prepare("INSERT INTO rt_files (
+			id,
+            nameId, 
+            name, 
+            link, 
+            comment, 
+            type, 
+            date, 
+            size,
+            metadata
+        ) VALUES (
+        	:id,
+            :nameId, 
+            :name, 
+            :link, 
+            :comment, 
+            :type, 
+            :date, 
+            :size,
+            :metadata
+        )");
+
+		$statement->bindValue(':id', $id);
+        $statement->bindValue(':nameId', $file->getNameId());
+        $statement->bindValue(':name', $file->getName());
+        $statement->bindValue(':link', $file->getLink());
+        $statement->bindValue(':comment', $file->getComment());
+        $statement->bindValue(':type', $file->getType());
+        $statement->bindValue(':date', $file->getDate());
+        $statement->bindValue(':size', $file->getSize());
+        $statement->bindValue(':metadata', json_encode($file->getMetadata()));
+
+        $statement->execute();
+	}
 }

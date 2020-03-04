@@ -2,7 +2,6 @@
 
 class File 
 {
-    private $id;
     private $name;
     private $nameId;
     private $link;

@@ -17,6 +17,7 @@ class MainController
     private $fileDirectory = 'public/files/';
     private $filesTable;
     private $fileController;
+    private $sphinxSearch;
 
     public function __construct(Twig $twig, Request $request, Response $response, $db)
     {
@@ -27,6 +28,7 @@ class MainController
 
         $this->filesTable = new FilesTable($db);
         $this->fileController = new FileController($twig, $request, $response, $db);
+        $this->sphinxSearch = new SphinxSearch();
     }
 
     public function printPage(): Response
@@ -63,7 +65,8 @@ class MainController
             $size = MediaInfo::getSize($link);
 
             $file = new File($nameId, $name, $link, $comment, $type, $date, $size, $metadata);
-            $this->filesTable->addFile($file);
+            $fileId = $this->filesTable->addFile($file);
+            $this->sphinxSearch->add($fileId, $file);
 
             header('Location: /' . $nameId);
             exit;

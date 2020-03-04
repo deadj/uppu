@@ -5,7 +5,7 @@
         {% elseif type == "audio" %}
             <audio src="{{ link }}" controls></audio>
         {% elseif type == "image" %}
-            <img id="imgFile" src="{{ link }}">
+            <img id="imgFile" src="{{ link }}" width="350">
         {% endif %}
         <ul class="fileInfo">
             <li>Название: {{ name }}</li>
