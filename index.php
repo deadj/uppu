@@ -25,7 +25,7 @@ $app->get('/search', function(Request $request, Response $response){
 
 $app->get('/', function(Request $request, Response $response) {
     $mainController = new MainController($this->view, $request, $response, $this->db);
-    $mainController->printPage(); 
+    $mainController->printPage();
 });
 
 $app->get('/list', function(Request $request, Response $response){

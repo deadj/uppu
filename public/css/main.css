@@ -86,12 +86,13 @@ input[type="file"] {
 .searchBlock input[type="text"] {
 	display: inline-block;
 	width: 250px;
+	padding: 15px 20px;
 }
 
 .searchBlock input[type="submit"] {
 	display: inline-block;
 	width: 70px;
 	margin: 0px;
-	/*padding: 10px;*/
+	height: 40px;
 }
 

@@ -25,7 +25,7 @@ class FileController
 
 	public function printPage(string $nameId): Response
 	{
-		$file = $this->filesTable->getFile($nameId);
+		$file = $this->filesTable->getFileThroughNameId($nameId);
 
 		return $this->twig->render($this->response, 'file.phtml', [
 			'name' => $file->getName(),

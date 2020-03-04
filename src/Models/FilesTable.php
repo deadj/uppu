@@ -9,7 +9,7 @@ class FilesTable
         $this->pdo = $db;
     }
 
-    public function getFile(string $nameId): File
+    public function getFileThroughNameId(string $nameId): File
     {
         $statement = $this->pdo->prepare("SELECT * FROM files WHERE nameId = :nameId");
         $statement->bindValue(':nameId', $nameId);
@@ -20,6 +20,16 @@ class FilesTable
         return $this->createFile($result);
     }
 
+    public function getFileThroughId(int $id): File
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM files WHERE id = :id");
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_OBJ);
+
+        return $this->createFile($result);
+    }
 
     public function addFile(File $file): void
     {
@@ -69,6 +79,8 @@ class FilesTable
         return $filesList;
     }
 
+    // public function getFilesList
+
     private function createFile(object $row)
     {
         $file = new File(
@@ -83,10 +95,5 @@ class FilesTable
         );
 
         return $file;       
-    }
-
-    public function addRow(): void
-    {
-        
     }
 }

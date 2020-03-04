@@ -1,28 +1,33 @@
 {% include "DuplicateItems/header.phtml" %}
-    <table>
-        <tr>
-            <th>Название</th>
-            <th>Дата</th>
-            <th>Размер</th>
-            <th>Скачать</th>
-        </tr>
-        {% for file in filesList %}
-            {% if loop.index % 2 != 0 %}
-                <tr class="trSecond">
-            {% else %}
-                <tr>
-            {% endif %}
-                <td>{{ file.getName }}</td>
-                <td>{{ file.getDate }}</td>
-                {% if file.getSize <= 1000 %}
-                    <td>{{ file.getSize }} Кб.</td>
-                {% else %}
-                    <td>{{ file.getSize / 1000 }} Мб.</td>
-                {% endif %}
-                <td><a href="{{ file.getNameId }}">Скачать</a></td>
+    {% if filesList %}
+        <table>
+            <tr>
+                <th>Название</th>
+                <th>Дата</th>
+                <th>Размер</th>
+                <th>Скачать</th>
             </tr>
-        {% endfor %}
-    </table>
+            
+                {% for file in filesList %}
+                    {% if loop.index % 2 != 0 %}
+                        <tr class="trSecond">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                        <td>{{ file.getName }}</td>
+                        <td>{{ file.getDate }}</td>
+                        {% if file.getSize <= 1000 %}
+                            <td>{{ file.getSize }} Кб.</td>
+                        {% else %}
+                            <td>{{ file.getSize / 1000 }} Мб.</td>
+                        {% endif %}
+                        <td><a href="{{ file.getNameId }}">Скачать</a></td>
+                    </tr>
+                {% endfor %}
+        </table>
+    {% else %}
+        <h3>Упс... Файлов нет :(</h3>
+    {% endif %}
     <footer>
         
     </footer>
