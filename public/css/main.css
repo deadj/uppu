@@ -43,7 +43,6 @@ footer {
 }
 
 form:not(.searchBlock) {
-	margin-top: 150px;
 	display: inline-block;
 	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
 	padding: 40px;
@@ -62,13 +61,17 @@ input[type="submit"] {
 	height: 50px;
 	margin-top: 20px;	
 	margin-bottom: 0px;
-	background-color: rgb(240,240,240)
+}
+
+input[type="submit"]:not(.deleteButton) {
+	background-color: rgb(240,240,240);
 }
 
 input[type="text"] {
 	width: 300px;
 	height: 10px;
 	padding: 20px;
+	/*cursor: pointer;*/
 }
 
 input[type="file"] {
@@ -94,5 +97,10 @@ input[type="file"] {
 	width: 70px;
 	margin: 0px;
 	height: 40px;
+}
+
+.deleteButton {
+	background-color: rgb(253,1,13,0.7);
+	display: none;
 }
 

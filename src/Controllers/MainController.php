@@ -14,7 +14,7 @@ class MainController
     private $response;
     private $request;
     private $db;
-    private $fileDirectory = 'public/files/';
+    private $fileDirectory = 'files/';
     private $filesTable;
     private $fileController;
     private $sphinxSearch;
@@ -36,9 +36,8 @@ class MainController
         return $this->twig->render($this->response, 'main.phtml');
     }
 
-    public function uploadFile(): void
+    public function uploadFile(): string
     {
-
         $uploadedFiles = $this->request->getUploadedFiles();
         $uploadedFile = $uploadedFiles['file'];
 
@@ -54,6 +53,7 @@ class MainController
             $type = preg_replace('/\\/\\w*/', '', $uploadedFile->getClientMediaType());
             $link = $folderPath . "/" . $nameId . '.' . preg_replace('/.*[.]/', '', $uploadedFile->getClientFilename());
 
+            //Конвертация
             if ($type == "video") {
                 Converter::convertVideo($link);
                 $link = preg_replace('/[.]\\w*/', '.mp4', $link);
@@ -63,14 +63,15 @@ class MainController
             $date = date("Y-m-d H:i:s");
             $metadata = MediaInfo::getMetadata($type, $link);
             $size = MediaInfo::getSize($link);
-
+            
             $file = new File($nameId, $name, $link, $comment, $type, $date, $size, $metadata);
             $fileId = $this->filesTable->addFile($file);
             $this->sphinxSearch->add($fileId, $file);
 
-            header('Location: /' . $nameId);
-            exit;
+            // header('Location: /' . $nameId);
+            // exit();
 
+            return $nameId;
         } elseif ($uploadedFile->getError() == 1) {
             echo "Слишком большой размер файла";
         } elseif ($uploadedFile->getError() == 4) {

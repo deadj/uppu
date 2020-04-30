@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Uppu</title>
-    <link rel="stylesheet" href="/public/css/main.css">
-    <link rel="stylesheet" href="/public/css/file.css">
-    <link rel="stylesheet" href="/public/css/list.css">
-    <!-- <link rel="stylesheet" href="/src/plugins/dropzone-master/dist/dropzone.css"> -->
-    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-	<!-- <script src="/src/plugins/dropzone-master/dist/dropzone.js"></script> -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/file.css">
+    <link rel="stylesheet" href="css/list.css">
+    <link href="dropzone/dist/dropzone.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="dropzone/dist/dropzone.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>  <script type="text/javascript">
+    </script>   
 </head>
 <body>
     <header>
@@ -17,7 +18,6 @@
         <form class="searchBlock" action="/search" method="GET">
             <input type="text" name="text">
             <input type="submit" value="Искать">
-            <!-- <input type="image" src="public/img/search.png" alt="Ок"> -->
         </form>
         <a href="/list"><h3>Список последних файлов</h3></a>
     </header>

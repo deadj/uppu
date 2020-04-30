@@ -3,20 +3,21 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
-$app = new \Slim\App(["settings" => include('src/dbConfig.php')]);
+
+$app = new \Slim\App(["settings" => include('../src/dbConfig.php')]);
 $container = $app->getContainer();
 
 $container['view'] = function ($container) {
-    $view = new \Slim\Views\Twig('src/Templates/', [
+    $view = new \Slim\Views\Twig('../src/Templates/', [
             'cache' => false
     ]);
 
     return $view;
 };
 
-$container['db'] = include('src/dbConnect.php');
+$container['db'] = include('../src/dbConnect.php');
 
 $app->get('/search', function(Request $request, Response $response){
     $searchController = new SearchController($this->view, $request, $response, $this->db);
@@ -40,7 +41,10 @@ $app->get('/{nameId}', function(Request $request, Response $response, $args){
 
 $app->post('/', function(Request $request, Response $response){
     $mainController = new MainController($this->view, $request, $response, $this->db);
-    $mainController->uploadFile();
+    // return $mainController->uploadFile();
+    $response->getBody()->write($mainController->uploadFile());
+
+    return $response;
 });
 
 
