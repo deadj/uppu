@@ -26,25 +26,30 @@
             <a class="uploadButton" href="{{ link }}" download="">Скачать</a>
         </div>
     </div>
-    {% if comments|length > 0 %}
-        <div class="commentsBlock" id="commentsBlock">
-            {% for comment in comments %}
-                <div class="comment">
-                    <h5>{{ comment.date }}</h6>
-                    <p>{{ comment.text }}</p>
-                    <a href="">Ответить</a>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="commentsBlock" id="commentsBlock">
-            <p>Ваш комментарий будет первым</p>
-        </div>
-    {% endif %}
+        {% if comments|length > 0 %}
+            <div class="commentsBlock" id="commentsBlock">
+                {% for comment in comments %}
+                    <div class="comment">
+                        <h5>{{ comment.date }}</h6>
+                        <p>{{ comment.text }}</p>
+                        <a id="replyButton" onclick="printReplyToComment(this)">Ответить</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="commentsBlock" id="commentsBlock">
+                <p>Ваш комментарий будет первым</p>
+            </div>
+        {% endif %}
+
     <form class="newCommentBlock" id="newCommentBlock">
         <textarea name="comment" id="newCommentsText" required></textarea>
         <button id="addCommentButton">Отправить</button>
     </form>
+    <script type="text/x-template" id="templateReplyComment">
+            <input class="replyCommentButton" type="text" name="comment">
+            <button id="replyCommentButton">Отправить</button>
+    </script>
     <script>
         //проверять на пустой коммент
         newCommentBlock.onsubmit = async function(e){
@@ -123,8 +128,9 @@
                 p.innerHTML = commentsList[i].text;
 
                 var a = document.createElement("a");
-                a.href = '';
                 a.innerHTML = "Ответить";
+                a.name = "replyButton";
+                a.addAttribute("onclick", "printReplyToComment()");
 
                 comment.appendChild(date);
                 comment.appendChild(p);
@@ -137,6 +143,29 @@
             var body = document.getElementsByTagName('body')[0];
             body.removeChild(document.getElementById('commentsBlock'));
             body.insertBefore(commentsBlock, document.getElementById('newCommentBlock'));
+        }
+
+        function printReplyToComment(comment) {
+            var searchElement = comment.parentNode.getElementsByTagName('form').length;
+            if (searchElement === 0) {
+                var replyTemplate = templateReplyComment.innerHTML;
+                var newCommentBlock = document.createElement('form');
+                newCommentBlock.classList.add('replyToCommentBlock');
+                newCommentBlock.innerHTML = replyTemplate;
+
+                var replyButton = comment.parentNode.querySelector('a');
+                replyButton.innerHTML = "Закрыть";
+                comment.parentNode.appendChild(newCommentBlock);
+            } else {
+                var form = comment.parentNode.getElementsByTagName('form')[0];
+                comment.parentNode.removeChild(form);
+
+                var replyButton = comment.parentNode.querySelector('a');
+                replyButton.innerHTML = "Ответить";
+            }   
+
+
+
         }
     </script>
 </body>

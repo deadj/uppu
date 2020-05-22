@@ -42,7 +42,7 @@ footer {
 	display: block;
 }
 
-form:not(.searchBlock) {
+form:not(.searchBlock, .replyToCommentBlock) {
 	display: inline-block;
 	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
 	padding: 40px;
@@ -67,7 +67,7 @@ input[type="submit"]:not(.deleteButton), button {
 	background-color: rgb(240,240,240);
 }
 
-input[type="text"] {
+input[type="text"]:not(.replyCommentButton) {
 	width: 300px;
 	height: 10px;
 	padding: 20px;

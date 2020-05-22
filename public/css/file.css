@@ -45,7 +45,7 @@
 .comment {
 	display: block;
 	border-bottom: 1px solid grey;
-	padding: 10px;
+	padding: 10px 0px;
 	text-align: left;
 }
 
@@ -81,11 +81,13 @@ button {
 	border: none;
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
 	width: auto;
-	display: inline-block;
+	display: block;
 	margin: 0px;
 	padding: 5px 30px;
 	margin-top: 10px;
-	float: right;
+	/*float: right;*/
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .commentPopup {
@@ -93,4 +95,30 @@ button {
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
 	background-color: white;
 	padding: 20px;
+}
+
+.replyToCommentBlock input {
+	display: inline-block;
+	width: calc(100% - 125px);
+	height: 30px;
+	padding: 10px;
+}
+
+.replyToCommentBlock button {
+	width: 100px;
+	padding: 5px 10px;
+	margin: 0px;
+	display: inline-block;
+}
+
+.replyToCommentBlock {
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+}
+
+.comment a {
+	display: block;
+	text-align: right;
+	margin-bottom: 10px;
 }

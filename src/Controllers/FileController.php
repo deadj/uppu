@@ -48,8 +48,7 @@ class FileController
 	public function addComment(string $fileId, string $text)
 	{	
 		$date = date("Y-m-d H:i:s");
-
-		// $this->commentsTable->addComment($fileId, $text, $date);
+		$this->commentsTable->addComment($fileId, $text, $date);
 	}
 
 	public function getCommentsList(string $fileId): array

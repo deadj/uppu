@@ -63,7 +63,8 @@ class CommentsTable
 			$row->id,
 			$row->fileId,
 			$row->text,
-			$row->date
+			$row->date,
+			$row->parentId
 		);
 
 		return $comment;
