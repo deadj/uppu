@@ -56,14 +56,14 @@ input {
 	vertical-align: top;
 }
 
-input[type="submit"] {
+input[type="submit"], button {
 	width: 100%;
 	height: 50px;
 	margin-top: 20px;	
 	margin-bottom: 0px;
 }
 
-input[type="submit"]:not(.deleteButton) {
+input[type="submit"]:not(.deleteButton), button {
 	background-color: rgb(240,240,240);
 }
 

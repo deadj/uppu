@@ -5,7 +5,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require_once '../vendor/autoload.php';
 
-
 $app = new \Slim\App(["settings" => include('../src/dbConfig.php')]);
 $container = $app->getContainer();
 
@@ -39,6 +38,25 @@ $app->get('/{nameId}', function(Request $request, Response $response, $args){
     $fileController->printPage($args['nameId']);
 });
 
+
+$app->post('/addComment', function (Request $request, Response $response){
+    $data = $request->getParsedBody();
+    
+    $fileController = new FileController($this->view, $request, $response, $this->db);
+    $fileController->addComment($data['fileId'], $data['comment']);
+
+    return "done";
+});
+
+$app->post('/getCommentsList', function (Request $request, Response $response){
+    $data = $request->getParsedBody();
+
+    $fileController = new FileController($this->view, $request, $response, $this->db);
+
+    return $response->withJson($fileController->getCommentsList($data['fileId']));
+});
+
+//Перенаправление можно сделать из Slim (withRedirect)
 $app->post('/', function(Request $request, Response $response){
     $mainController = new MainController($this->view, $request, $response, $this->db);
     // return $mainController->uploadFile();
@@ -46,6 +64,7 @@ $app->post('/', function(Request $request, Response $response){
 
     return $response;
 });
+
 
 
 
