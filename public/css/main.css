@@ -42,10 +42,10 @@ footer {
 	display: block;
 }
 
-form:not(.searchBlock, .replyToCommentBlock) {
+.uploadForm, .newCommentBlock {
 	display: inline-block;
 	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
-	padding: 40px;
+	padding: 20px;
 }
 
 input {
@@ -67,7 +67,7 @@ input[type="submit"]:not(.deleteButton), button {
 	background-color: rgb(240,240,240);
 }
 
-input[type="text"]:not(.replyCommentButton) {
+input[type="text"]:not(.replyCommentField) {
 	width: 300px;
 	height: 10px;
 	padding: 20px;

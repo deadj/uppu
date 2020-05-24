@@ -1,5 +1,5 @@
 {% include "DuplicateItems/header.phtml" %}
-    <form action="/" method="POST" id="myForm">
+    <form action="/" method="POST" id="myForm" class="uploadForm">
         <input type="text" name="name" id="name" placeholder="Название (не более 30 символов)" required>
         <input type="text" name="comment" placeholder="Комментарий (не более 50 символов)" pattern="\D{0, 50}">
         <div class="dropzone" id="myDropzone" name="mainFileUploader">
@@ -14,60 +14,6 @@
         <input class="deleteButton" type="submit" value="Удалить файл" id="deleteButton">
         <input type="submit" value="Загрузить" id="uploadButton">
     </form>
-    <script type="text/javascript">
-        Dropzone.options.myDropzone = {
-            url: "/",
-            autoProcessQueue: false,
-            maxFilesize: 2,
-            maxFiles: 1,
-
-            init: function () {
-
-                var myDropzone = this;
-
-                $("#uploadButton").click(function (e) {
-                    var name = document.getElementById('name').value;
-
-                    if (!name.trim() == "") {
-                        e.preventDefault();
-                        myDropzone.processQueue();
-                    }
-                });
-
-                this.on('maxfilesreached', function() {
-                    myDropzone.removeEventListeners();
-                });
-
-                this.on("addedfile", function (file) {
-                    var deleteButton = document.getElementById("deleteButton");
-                    deleteButton.style.display = "block";
-
-                    deleteButton.addEventListener("click", function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        myDropzone.removeFile(file);
-                        myDropzone.setupEventListeners();
-                    });
-                });
-
-                this.on("error", function (file) {
-                    myDropzone.removeEventListeners();
-                }); 
-
-                this.on('sending', function(file, xhr, formData) {
-                    var data = $('#myForm').serializeArray();
-                    $.each(data, function(key, el) {
-                        formData.append(el.name, el.value);
-                    });
-                });
-            },
-
-            success: function(file, response) {
-                document.location.href = "/" + response;
-            }
-        }
-
-    </script>
+    <script src="js/forFiles/main.js"></script>
 </body> 
 </html>

@@ -43,9 +43,9 @@ $app->post('/addComment', function (Request $request, Response $response){
     $data = $request->getParsedBody();
     
     $fileController = new FileController($this->view, $request, $response, $this->db);
-    $fileController->addComment($data['fileId'], $data['comment']);
+    $response->getBody()->write($fileController->addComment($data['fileId'], $data['comment'], $data['parentId']));
 
-    return "done";
+    return $response;
 });
 
 $app->post('/getCommentsList', function (Request $request, Response $response){
@@ -56,10 +56,8 @@ $app->post('/getCommentsList', function (Request $request, Response $response){
     return $response->withJson($fileController->getCommentsList($data['fileId']));
 });
 
-//Перенаправление можно сделать из Slim (withRedirect)
 $app->post('/', function(Request $request, Response $response){
     $mainController = new MainController($this->view, $request, $response, $this->db);
-    // return $mainController->uploadFile();
     $response->getBody()->write($mainController->uploadFile());
 
     return $response;

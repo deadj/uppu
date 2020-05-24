@@ -9,21 +9,29 @@ class CommentsTable
 		$this->pdo = $db;
 	}
 
-	public function addComment(string $fileId, string $text, string $date): void
+	public function addComment(
+		string $fileId, 
+		string $text, 
+		string $date, 
+		$parentId
+	): void
 	{
 		$statement = $this->pdo->prepare("INSERT INTO comments (
 			text,
 			fileId,
-			date
+			date,
+			parentId
 		) VALUES (
 			:text,
 			:fileId,
-			:date
+			:date,
+			:parentId
 		)");
 
 		$statement->bindValue(':text', $text);
 		$statement->bindValue(':fileId', $fileId);
 		$statement->bindValue(':date', $date);
+		$statement->bindValue(':parentId', $parentId);
 
 		$statement->execute();
 	}

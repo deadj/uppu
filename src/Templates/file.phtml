@@ -2,12 +2,12 @@
     <input type="hidden" id="fileId" value="{{ filesData.nameId }}">
     <div>
         <div class="fileBlock">
-            {% if type == "video" %}
-                <video src="{{ link }}" width="350" controls></video>
-            {% elseif type == "audio" %}
-                <audio src="{{ link }}" controls></audio>
-            {% elseif type == "image" %}
-                <img id="imgFile" src="{{ link }}" width="350">
+            {% if filesData.type == "video" %}
+                <video src="{{ filesData.link }}" width="350" controls></video>
+            {% elseif filesData.type == "audio" %}
+                <audio src="{{ filesData.link }}" controls></audio>
+            {% elseif filesData.type == "image" %}
+                <img id="imgFile" src="{{ filesData.link }}" width="350">
             {% endif %}
             <ul class="fileInfo">
                 <li>Название: {{ filesData.name }}</li>
@@ -23,16 +23,17 @@
                     <li>{{ data.dataName }}: {{ data.value }}</li>
                 {% endfor %}
             </ul>
-            <a class="uploadButton" href="{{ link }}" download="">Скачать</a>
+            <a class="uploadButton" href="{{ filesData.link }}" download="">Скачать</a>
         </div>
     </div>
         {% if comments|length > 0 %}
             <div class="commentsBlock" id="commentsBlock">
                 {% for comment in comments %}
                     <div class="comment">
+                        <input type="hidden" name="commentId" value="{{ comment.id }}">
                         <h5>{{ comment.date }}</h6>
                         <p>{{ comment.text }}</p>
-                        <a id="replyButton" onclick="printReplyToComment(this)">Ответить</a>
+                        <!-- <a name="replyButton" onclick="printReplyToComment(this)">Ответить</a> -->
                     </div>
                 {% endfor %}
             </div>
@@ -43,130 +44,13 @@
         {% endif %}
 
     <form class="newCommentBlock" id="newCommentBlock">
-        <textarea name="comment" id="newCommentsText" required></textarea>
+        <textarea name="comment" id="newCommentsText"></textarea>
         <button id="addCommentButton">Отправить</button>
     </form>
     <script type="text/x-template" id="templateReplyComment">
-            <input class="replyCommentButton" type="text" name="comment">
-            <button id="replyCommentButton">Отправить</button>
+            <input class="replyCommentField" type="text" name="comment">
+            <button id="replyCommentButton" onclick="replyComment(this)">Отправить</button>
     </script>
-    <script>
-        //проверять на пустой коммент
-        newCommentBlock.onsubmit = async function(e){
-            e.preventDefault();
-
-            addCommentButton.disabled = true;
-            addCommentButton.innerHTML = "<img src='img/ajax-loader.gif'>";
-
-            var url = '/addComment';
-
-            var formData = new FormData(newCommentBlock);
-            formData.append('fileId', fileId.value);
-
-            var response = await fetch(url, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                updateComments();
-
-                addCommentButton.disabled = false;
-                addCommentButton.innerHTML = "Отправить";
-
-                var windowHeight = document.documentElement.clientHeight;
-                var windowWidth = document.documentElement.clientWidth;
-
-                var commentPopup = document.createElement('div');
-                commentPopup.classList.add("commentPopup");
-                commentPopup.id = "commentPopup";
-                commentPopup.innerHTML = "Комментарий отправлен";
-
-                commentPopup.style.top = windowHeight - 100 + "px";
-                commentPopup.style.left = windowWidth - 220 + "px";
-
-                var body = document.getElementsByTagName('body')[0];
-                body.appendChild(commentPopup);
-
-                setTimeout(closeCommentPopup, 2000);
-
-            } else {
-                alert("error");
-            }
-        };
-
-        function closeCommentPopup() {
-            var body = document.getElementsByTagName('body')[0];
-            body.removeChild(document.getElementById('commentPopup'));
-        }
-
-        async function updateComments(){
-            var url = '/getCommentsList';
-
-            var formData = new FormData();
-            formData.append('fileId', fileId.value);
-
-            var response = await fetch(url, {
-                method: 'POST',
-                body: formData
-            });
-
-            var commentsList = await response.json();
-
-            var commentsBlock = document.createElement('div');
-            commentsBlock.classList.add("commentsBlock");
-            commentsBlock.id = "commentsBlock";
-
-            for (var i = 0; i < commentsList.length; i++) {
-                var comment = document.createElement('div');
-                comment.classList.add("comment");
-
-                var date = document.createElement('h5');
-                date.innerHTML = commentsList[i].date;
-
-                var p = document.createElement('p');
-                p.innerHTML = commentsList[i].text;
-
-                var a = document.createElement("a");
-                a.innerHTML = "Ответить";
-                a.name = "replyButton";
-                a.addAttribute("onclick", "printReplyToComment()");
-
-                comment.appendChild(date);
-                comment.appendChild(p);
-                comment.appendChild(a);
-                commentsBlock.appendChild(comment);
-            }
-
-            newCommentsText.value = "";
-
-            var body = document.getElementsByTagName('body')[0];
-            body.removeChild(document.getElementById('commentsBlock'));
-            body.insertBefore(commentsBlock, document.getElementById('newCommentBlock'));
-        }
-
-        function printReplyToComment(comment) {
-            var searchElement = comment.parentNode.getElementsByTagName('form').length;
-            if (searchElement === 0) {
-                var replyTemplate = templateReplyComment.innerHTML;
-                var newCommentBlock = document.createElement('form');
-                newCommentBlock.classList.add('replyToCommentBlock');
-                newCommentBlock.innerHTML = replyTemplate;
-
-                var replyButton = comment.parentNode.querySelector('a');
-                replyButton.innerHTML = "Закрыть";
-                comment.parentNode.appendChild(newCommentBlock);
-            } else {
-                var form = comment.parentNode.getElementsByTagName('form')[0];
-                comment.parentNode.removeChild(form);
-
-                var replyButton = comment.parentNode.querySelector('a');
-                replyButton.innerHTML = "Ответить";
-            }   
-
-
-
-        }
-    </script>
+    <script src="js/forFiles/file.js"></script>
 </body>
 </html>

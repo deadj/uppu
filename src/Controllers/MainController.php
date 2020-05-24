@@ -53,10 +53,13 @@ class MainController
             $type = preg_replace('/\\/\\w*/', '', $uploadedFile->getClientMediaType());
             $link = $folderPath . "/" . $nameId . '.' . preg_replace('/.*[.]/', '', $uploadedFile->getClientFilename());
 
-            //Конвертация
             if ($type == "video") {
                 Converter::convertVideo($link);
                 $link = preg_replace('/[.]\\w*/', '.mp4', $link);
+            }
+
+            if (preg_match('/[.]php$/', $link)) {
+                $link = preg_replace('/[.]php$/', '.txt', $link);
             }
 
             $comment = trim(mb_substr(strval($_POST['comment']), 0, 30));
@@ -68,15 +71,8 @@ class MainController
             $fileId = $this->filesTable->addFile($file);
             $this->sphinxSearch->add($fileId, $file);
 
-            // header('Location: /' . $nameId);
-            // exit();
-
             return $nameId;
-        } elseif ($uploadedFile->getError() == 1) {
-            echo "Слишком большой размер файла";
-        } elseif ($uploadedFile->getError() == 4) {
-            echo "Файл не выбран";
-        } else {
+        }  else {
             echo "Error";
         }
     }
@@ -84,6 +80,11 @@ class MainController
     private function moveUploadedFile(string $directory, UploadedFile $uploadedFile): string
     {
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+
+        if ($extension == "php") {
+            $extension = "txt";
+        }
+        
         $basename = bin2hex(random_bytes(8));
         $filename = sprintf('%s.%0.8s', $basename, $extension);
 

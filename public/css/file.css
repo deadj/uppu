@@ -17,8 +17,9 @@
 .fileBlock, .commentsBlock, .newCommentBlock {
 	display: inline-block;
 	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.5);
-	padding: 40px;
+	padding: 20px;
 	margin-bottom: 40px;
+	width: 50%;
 }
 
 .commentsBlock, .newCommentBlock  {

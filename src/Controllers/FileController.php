@@ -45,10 +45,20 @@ class FileController
 		]);
 	}
 
-	public function addComment(string $fileId, string $text)
+	public function addComment(string $fileId, string $text, $parentId)
 	{	
-		$date = date("Y-m-d H:i:s");
-		$this->commentsTable->addComment($fileId, $text, $date);
+		if ($text != "") {
+			if ($parentId === 'NULL') {
+				$parentId = NULL;
+			}
+
+			$date = date("Y-m-d H:i:s");
+			$this->commentsTable->addComment($fileId, $text, $date, $parentId);
+
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function getCommentsList(string $fileId): array
@@ -70,6 +80,5 @@ class FileController
 
 		return $commentsArray;
 	}
-
 
 }

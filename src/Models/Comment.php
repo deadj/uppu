@@ -42,7 +42,7 @@ class Comment
 		return $this->date;
 	}
 
-	public function getParentId(): int
+	public function getParentId()
 	{
 		return $this->parentId;
 	}
