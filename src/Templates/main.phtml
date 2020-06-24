@@ -1,7 +1,7 @@
 {% include "DuplicateItems/header.phtml" %}
     <form action="/" method="POST" id="myForm" class="uploadForm">
         <input type="text" name="name" id="name" placeholder="Название (не более 30 символов)" required>
-        <input type="text" name="comment" placeholder="Комментарий (не более 50 символов)" pattern="\D{0, 50}">
+        <input type="text" name="comment" placeholder="Комментарий (не более 50 символов)">
         <div class="dropzone" id="myDropzone" name="mainFileUploader">
             <div class="dz-message d-flex flex-column">
                 <i class="material-icons text-muted">cloud_upload</i>

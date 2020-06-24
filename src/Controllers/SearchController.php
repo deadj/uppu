@@ -1,36 +1,27 @@
 <?php
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Views\Twig;
-
 class SearchController
 {
-	private $twig;
-	private $response;
-	private $request;
+	private $view;
 	private $db;
 	private $sphinxSearch;
 	private $filesTable;
 
-	public function __construct(Twig $twig, Request $request, Response $response, $db)
+	public function __construct(\Slim\Views\Twig $view, $db)
 	{
-		$this->twig = $twig;
-		$this->request = $request;
-		$this->response = $response;
+		$this->view = $view;
 		$this->db = $db;
-		
 		$this->sphinxSearch = new SphinxSearch();
 		$this->filesTable = new FilesTable($db);
 	}
 
-	public function search()
+	public function search($request, $response, $args)
 	{
-		if ($this->request->getParam('text') == "") {
-			return $this->twig->render($this->response, 'main.phtml');
+		if ($request->getParam('text') == "") {
+			return $this->view->render($response, 'main.phtml');
 		}
 
-		$filesId = $this->sphinxSearch->search($this->request->getParam('text'));
+		$filesId = $this->sphinxSearch->search($request->getParam('text'));
 		$filesArray = array();
 
 		if (!empty($filesId)) {
@@ -39,6 +30,6 @@ class SearchController
 			}
 		}
 
-		return $this->twig->render($this->response, 'list.phtml', ['filesList' => $filesArray]); 
+		return $this->view->render($response, 'list.phtml', ['filesList' => $filesArray]); 
 	}
 }

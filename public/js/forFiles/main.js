@@ -47,6 +47,7 @@ Dropzone.options.myDropzone = {
     },
 
     success: function(file, response) {
-        document.location.href = "/" + response;
+        document.location.href = "/file/" + response;
+        // alert(response);
     }
 }

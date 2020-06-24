@@ -21,7 +21,7 @@
                         {% else %}
                             <td>{{ file.getSize / 1000 }} Мб.</td>
                         {% endif %}
-                        <td><a href="{{ file.getNameId }}">Скачать</a></td>
+                        <td><a href="/file/{{ file.getNameId }}">Скачать</a></td>
                     </tr>
                 {% endfor %}
         </table>

@@ -1,36 +1,29 @@
 <?php
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Views\Twig;
-
 class FileController
 {
-	private $twig;
-	private $response;
-	private $request;
+	private $view;
 	private $db;
-
 	private $filesTable;
 	private $commentsTable;
 
-	public function __construct(Twig $twig, Request $request, Response $response, $db)
+	public function __construct(\Slim\Views\Twig $view, $db)
 	{
-		$this->twig = $twig;
-		$this->request = $request;
-		$this->response = $response;
+		$this->view = $view;
 		$this->db = $db;
 
 		$this->filesTable = new FilesTable($db);
 		$this->commentsTable = new CommentsTable($db);
 	}
 
-	public function printPage(string $nameId): Response
+	public function printPage($request, $response, $args)
 	{
+		$nameId = $args['nameId'];
+
 		$file = $this->filesTable->getFileThroughNameId($nameId);
 		$comments = $this->commentsTable->getListForFile($nameId);
 
-		return $this->twig->render($this->response, 'file.phtml', [
+		return $this->view->render($response, 'file.phtml', [
 			'filesData' => array(
 				'nameId' => $file->getNameId(),
 				'name' => $file->getName(),
@@ -45,26 +38,38 @@ class FileController
 		]);
 	}
 
-	public function addComment(string $fileId, string $text, $parentId)
-	{	
-		if ($text != "") {
+	public function addComment($request, $response, $args)
+	{
+		$data = $request->getParsedBody();
+
+		$fileId = $data['fileId'];
+		$comment = $data['comment'];
+		$parentId = $data['parentId'];
+
+		if ($comment != "") {
 			if ($parentId === 'NULL') {
 				$parentId = NULL;
 			}
 
 			$date = date("Y-m-d H:i:s");
-			$this->commentsTable->addComment($fileId, $text, $date, $parentId);
+			$this->commentsTable->addComment($fileId, $comment, $date, $parentId);
 
-			return true;
+			$result = true;
 		} else {
-			return false;
+			$result = false;
 		}
+
+		return $response->getBody()->write($result);
 	}
 
-	public function getCommentsList(string $fileId): array
+	public function getCommentsList($request, $response, $args)
 	{
+		$data = $request->getParsedBody();
+		$fileId = $data['fileId'];
+
 		$commentsList = $this->commentsTable->getListForFile($fileId);
-		return $this->convertCommentsObjectToArray($commentsList);
+
+		return $response->withJson($this->convertCommentsObjectToArray($commentsList));		
 	}
 
 	private function convertCommentsObjectToArray(array $comments): array

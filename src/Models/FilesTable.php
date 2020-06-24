@@ -31,6 +31,8 @@ class FilesTable
         return $this->createFile($result);
     }
 
+    // public function getFilesThroughId(array $id): 
+
     public function addFile(File $file): int
     {
         $statement = $this->pdo->prepare("INSERT INTO files (

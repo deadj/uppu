@@ -12,58 +12,47 @@ $container['view'] = function ($container) {
     $view = new \Slim\Views\Twig('../src/Templates/', [
             'cache' => false
     ]);
-
     return $view;
 };
 
-$container['db'] = include('../src/dbConnect.php');
+$container['db'] = function($c){
+    $db = $c['settings']['db'];
+    $pdo = new PDO("mysql:host=" . $db["host"] . ";dbname=" . $db['dbname'] . ";charset=utf8",
+        $db['user'], $db['pass']);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $pdo;
+};
 
-$app->get('/search', function(Request $request, Response $response){
-    $searchController = new SearchController($this->view, $request, $response, $this->db);
-    $searchController->search();
-});
+$container['MainController'] = function($c) {
+    $view = $c->get("view");
+    $db = $c->get("db");
+    return new MainController($view, $db);
+};
 
-$app->get('/', function(Request $request, Response $response) {
-    $mainController = new MainController($this->view, $request, $response, $this->db);
-    $mainController->printPage();
-});
+$container['FileController'] = function($c){
+    $view = $c->get("view");
+    $db = $c->get("db");
+    return new FileController($view, $db);
+};
 
-$app->get('/list', function(Request $request, Response $response){
-    $listController = new ListController($this->view, $request, $response, $this->db);
-    $listController->printPage();
-});
+$container['ListController'] = function($c){
+    $view = $c->get("view");
+    $db = $c->get("db");
+    return new ListController($view, $db);
+};
 
-$app->get('/{nameId}', function(Request $request, Response $response, $args){
-    $fileController = new FileController($this->view, $request, $response, $this->db);
-    $fileController->printPage($args['nameId']);
-});
+$container['SearchController'] = function($c){
+    $view = $c->get("view");
+    $db = $c->get("db");
+    return new SearchController($view, $db);
+};
 
-
-$app->post('/addComment', function (Request $request, Response $response){
-    $data = $request->getParsedBody();
-    
-    $fileController = new FileController($this->view, $request, $response, $this->db);
-    $response->getBody()->write($fileController->addComment($data['fileId'], $data['comment'], $data['parentId']));
-
-    return $response;
-});
-
-$app->post('/getCommentsList', function (Request $request, Response $response){
-    $data = $request->getParsedBody();
-
-    $fileController = new FileController($this->view, $request, $response, $this->db);
-
-    return $response->withJson($fileController->getCommentsList($data['fileId']));
-});
-
-$app->post('/', function(Request $request, Response $response){
-    $mainController = new MainController($this->view, $request, $response, $this->db);
-    $response->getBody()->write($mainController->uploadFile());
-
-    return $response;
-});
-
-
-
+$app->get('/', \MainController::class . ':printPage');
+$app->get('/search', \SearchController::class . ':search');
+$app->get('/list', \ListController::class . ':printPage');
+$app->get('/file/{nameId}', \FileController::class . ':printPage');
+$app->post('/addComment', \FileController::class . ':addComment');
+$app->post('/getCommentsList', \FileController::class . ":getCommentsList");
+$app->post('/', \MainController::class . ':uploadFile');
 
 $app->run();

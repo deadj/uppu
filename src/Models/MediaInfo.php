@@ -51,9 +51,11 @@ class MediaInfo
 
 	public static function getSize(string $link): float
 	{
-		$getID3 = new getID3;
-		$fileData = $getID3->analyze($link);
+		// $getID3 = new getID3;
+		// $fileData = $getID3->analyze($link);
 
-		return $fileData['filesize'] / 1000;
+		// return $fileData['filesize'] / 1000;
+
+		return filesize($link) / 1000;
 	}
 }

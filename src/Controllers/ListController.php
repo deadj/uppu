@@ -1,33 +1,23 @@
 <?php
 
-use Slim\Http\Request;
-use Slim\Http\Response;
-use Slim\Views\Twig;
-
 class ListController
 {
-	private $twig;
-	private $response;
-	private $request;
+	private $view;
 	private $db;	
-
 	private $filesTable;
 
-	public function __construct(Twig $twig, Request $request, Response $response, $db)
+	public function __construct(\Slim\Views\Twig $view, $db)
 	{
-		$this->twig = $twig;
-		$this->request = $request;
-		$this->response = $response;
+		$this->view = $view;
 		$this->db = $db;
-
 		$this->filesTable = new FilesTable($db);
 	}
 
-	public function printPage(): Response
+	public function printPage($request, $response, $args)
 	{
 		$filesList = $this->filesTable->getFilesList();
 
-		return $this->twig->render($this->response, 'list.phtml', ['filesList' => $filesList]);
+		return $this->view->render($response, 'list.phtml', ['filesList' => $filesList]);
 	}
 }
 

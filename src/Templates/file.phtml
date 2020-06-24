@@ -3,11 +3,11 @@
     <div>
         <div class="fileBlock">
             {% if filesData.type == "video" %}
-                <video src="{{ filesData.link }}" width="350" controls></video>
+                <video src="/{{ filesData.link }}" width="350" controls></video>
             {% elseif filesData.type == "audio" %}
-                <audio src="{{ filesData.link }}" controls></audio>
+                <audio src="/{{ filesData.link }}" controls></audio>
             {% elseif filesData.type == "image" %}
-                <img id="imgFile" src="{{ filesData.link }}" width="350">
+                <img id="imgFile" src="/{{ filesData.link }}" width="350">
             {% endif %}
             <ul class="fileInfo">
                 <li>Название: {{ filesData.name }}</li>
@@ -23,7 +23,7 @@
                     <li>{{ data.dataName }}: {{ data.value }}</li>
                 {% endfor %}
             </ul>
-            <a class="uploadButton" href="{{ filesData.link }}" download="">Скачать</a>
+            <a class="uploadButton" href="/{{ filesData.link }}" download="">Скачать</a>
         </div>
     </div>
         {% if comments|length > 0 %}
@@ -51,6 +51,6 @@
             <input class="replyCommentField" type="text" name="comment">
             <button id="replyCommentButton" onclick="replyComment(this)">Отправить</button>
     </script>
-    <script src="js/forFiles/file.js"></script>
+    <script src="/js/forFiles/file.js"></script>
 </body>
 </html>
