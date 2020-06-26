@@ -71,23 +71,21 @@ async function updateComments(){
     commentsBlock.id = "commentsBlock";
 
     for (var i = 0; i < commentsList.length; i++) {
+        template = document.getElementById('templateComment').innerHTML;
+        template = template.replace('[[date]]', commentsList[i].date);
+        template = template.replace('[[text]]', commentsList[i].text);
+        
         var comment = document.createElement('div');
-        comment.classList.add("comment");
-
-        var date = document.createElement('h5');
-        date.innerHTML = commentsList[i].date;
-
-        var p = document.createElement('p');
-        p.innerHTML = commentsList[i].text;
+        comment.classList.add("comment");        
+        comment.innerHTML = template;
 
         // var a = document.createElement("a");
         // a.innerHTML = "Ответить";
         // a.name = "replyButton";
         // a.setAttribute("onclick", "printReplyToComment(this)");
 
-        comment.appendChild(date);
-        comment.appendChild(p);
-        // comment.appendChild(a);
+        // comment.appendChild(p);
+
         commentsBlock.appendChild(comment);
     }
 

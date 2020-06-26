@@ -47,9 +47,13 @@
         <textarea name="comment" id="newCommentsText"></textarea>
         <button id="addCommentButton">Отправить</button>
     </form>
-    <script type="text/x-template" id="templateReplyComment">
-            <input class="replyCommentField" type="text" name="comment">
-            <button id="replyCommentButton" onclick="replyComment(this)">Отправить</button>
+<!--     <script type="text/x-template" id="templateReplyComment">
+        <input class="replyCommentField" type="text" name="comment">
+        <button id="replyCommentButton" onclick="replyComment(this)">Отправить</button>
+    </script> -->
+    <script type="text/x-template" id="templateComment">
+        <h5>[[date]]</h5>
+        <p>[[text]]</p>
     </script>
     <script src="/js/forFiles/file.js"></script>
 </body>

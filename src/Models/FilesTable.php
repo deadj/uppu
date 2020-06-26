@@ -31,7 +31,19 @@ class FilesTable
         return $this->createFile($result);
     }
 
-    // public function getFilesThroughId(array $id): 
+    public function getFilesArrayThroughId(string $stringId): array
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM files WHERE id IN " . $stringId);
+        $statement->execute();
+
+        $filesList = array();
+
+        while ($row = $statement->fetch(PDO::FETCH_OBJ)) {
+            $filesList[] = $this->createFile($row);
+        }
+
+        return $filesList;
+    } 
 
     public function addFile(File $file): int
     {
