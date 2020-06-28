@@ -1,7 +1,7 @@
 Dropzone.options.myDropzone = {
     url: "/",
     autoProcessQueue: false,
-    maxFilesize: 2,
+    maxFilesize: 20,
     maxFiles: 1,
 
     init: function () {
@@ -48,6 +48,5 @@ Dropzone.options.myDropzone = {
 
     success: function(file, response) {
         document.location.href = "/file/" + response;
-        // alert(response);
     }
 }

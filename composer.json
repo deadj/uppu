@@ -10,7 +10,8 @@
         "robmorgan/phinx": "^0.11.1",
         "james-heinrich/getid3": "^1.9.19",
         "symfony/process": "^5.0",
-        "ankitpokhrel/tus-php": "^2.0"
+        "ankitpokhrel/tus-php": "^2.0",
+        "anorgan/qutee": "^0.8"
     },
     "autoload": {
         "psr-4": {

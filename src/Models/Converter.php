@@ -4,25 +4,34 @@ class Converter
 {
 	public static function convertVideo(string $link): void
 	{
+
 		$getID3 = new getID3;
 		$fileData = $getID3->analyze($link);
+
 		
 		if (!isset($fileData['video']['fourcc_lookup']) || !preg_match('/H[.]264/iu', $fileData['video']['fourcc_lookup'])) {
-	        $newLink = preg_replace('/[.]\\w*/', '.mp4', $link);
 
-	        $process = new Process(['ffmpeg', '-i', $link, '-q:v', '1', '-c:v', 'h264', $newLink]);
-	        $process->run();
+	        $gearmanClient = new GearmanCLient();
+	        $gearmanClient->addServer();
 
-	        if (!$process->isSuccessful()) {
-	            //echo $process->getErrorOutput();
-	            //Добавить сохранение логов
-	            //Добавить вывод ошибки при загрузке
+			// echo "gfdgfdg";
+			// exit;
+	        $res = $gearmanClient->doBackground('convertVideo', $link);
+	        // echo $res;
+	        // exit;
+	        
 
-	            echo "error convert";
-	            exit;
-	        }
+	        // if (!$process->isSuccessful()) {
+	        //     //echo $process->getErrorOutput();
+	        //     //Добавить сохранение логов
+	        //     //Добавить вывод ошибки при загрузке
 
-	        unlink($link);
+	        //     echo "error convert";
+	        //     exit;
+	        // } 
+        } else {
+        	echo "ihgjfihf";
+        	exit;
         }		
 	}
 }

@@ -100,7 +100,18 @@ class FilesTable
         return $filesList;
     }
 
-    private function createFile(object $row)
+    public function updateMetadata(string $nameId, $metadata, int $size): void
+    {
+        $statement = $this->pdo->prepare("UPDATE files SET size = :size, metadata = :metadata WHERE nameId = :nameId");
+
+        $statement->bindValue(':size', $size);
+        $statement->bindValue(':metadata', json_encode($metadata));
+        $statement->bindValue(':nameId', $nameId);
+
+        $statement->execute();
+    }
+
+    private function createFile(object $row): File
     {
         $file = new File(
             $row->nameId,

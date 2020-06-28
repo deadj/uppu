@@ -11,7 +11,7 @@ class MediaInfo
 		if ($type == "video") {
 			$data = array(
 				array(
-					"dataName" => strval("Ширина"), 
+					"dataName" => "Ширина", 
 					"value" => $fileData['video']['resolution_x']
 				), array(
 					"dataName" => "Высота", 
@@ -51,11 +51,25 @@ class MediaInfo
 
 	public static function getSize(string $link): float
 	{
-		// $getID3 = new getID3;
-		// $fileData = $getID3->analyze($link);
-
-		// return $fileData['filesize'] / 1000;
-
 		return filesize($link) / 1000;
+	}
+
+	public function getNullMetadataForVideo(): array
+	{
+		return array(
+			array(
+				"dataName" => "Ширина", 
+				"value" => 0
+			), array(
+				"dataName" => "Высота", 
+				"value" => 0
+			), array(
+				"dataName" => "Кадр/сек", 
+				"value" => 0
+			), array(
+				"dataName" => "Время", 
+				"value" => 0
+			)
+		);		
 	}
 }

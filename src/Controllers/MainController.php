@@ -1,8 +1,6 @@
 <?php
 
 use Slim\Http\UploadedFile;
-// use Symfony\Component\Process\Process;
-// use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class MainController
 {
@@ -11,6 +9,7 @@ class MainController
     private $filesTable;
     private $db;
     private $sphinxSearch;
+    private $getID3;
 
     public function __construct(\Slim\Views\Twig $view, $db)
     {
@@ -18,12 +17,56 @@ class MainController
         $this->db = $db;
         $this->filesTable = new FilesTable($db);
         $this->sphinxSearch = new SphinxSearch();
+        $this->getID3 = new getID3;
     }
 
     public function printPage($request, $response, $args)
     {
         return $this->view->render($response, 'main.phtml');
     }
+
+    // public function uploadFile($request, $response, $args)
+    // {
+    //     $data = $request->getParsedBody();
+    //     $uploadedFiles = $request->getUploadedFiles();
+    //     $uploadedFile = $uploadedFiles['file'];
+
+    //     if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+    //         $folderPath = $this->fileDirectory . date("m_d_y");
+    //         $extension = $this->getExtension($uploadedFile->getClientFilename());
+            
+    //         if (!file_exists($folderPath)) {
+    //             mkdir($folderPath);
+    //         }
+
+    //         $nameId = Helper::moveUploadedFile($folderPath . "/", $uploadedFile, $extension);
+    //         $name = strval(trim($data['name']));
+    //         $type = preg_replace('/\\/\\w*/', '', $uploadedFile->getClientMediaType());
+    //         $link = $this->createFilesLink($folderPath, $nameId, $uploadedFile->getClientFilename());
+
+    //         if ($type == "video") {
+    //             Converter::convertVideo($link);
+    //             $link = preg_replace('/[.]\\w*/', '.mp4', $link);
+    //         }
+            
+    //         if ($extension == "php" || $extension == "phtml") {
+    //             $link = preg_replace('/[.](php|phtml)$/', '.txt', $link);
+    //         }
+
+    //         $comment = trim(mb_substr(strval($data['comment']), 0, 30));
+    //         $date = date("Y-m-d H:i:s");
+    //         $metadata = MediaInfo::getMetadata($type, $link);
+    //         $size = MediaInfo::getSize($link);
+            
+    //         $file = new File($nameId, $name, $link, $comment, $type, $date, $size, $metadata);
+    //         $fileId = $this->filesTable->addFile($file);
+    //         $this->sphinxSearch->add($fileId, $file);
+
+    //         return $response->getBody()->write($nameId);
+    //     }  else {
+    //         echo "Error";
+    //     }
+    // }
 
     public function uploadFile($request, $response, $args)
     {
@@ -34,7 +77,7 @@ class MainController
         if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
             $folderPath = $this->fileDirectory . date("m_d_y");
             $extension = $this->getExtension($uploadedFile->getClientFilename());
-            
+
             if (!file_exists($folderPath)) {
                 mkdir($folderPath);
             }
@@ -45,8 +88,23 @@ class MainController
             $link = $this->createFilesLink($folderPath, $nameId, $uploadedFile->getClientFilename());
 
             if ($type == "video") {
-                Converter::convertVideo($link);
+                $fileData = $this->getID3->analyze($link);
+                if (!isset($this->fileData['video']['fourcc_lookup']) || 
+                    !preg_match('/H[.]264/iu', $this->fileData['video']['fourcc_lookup'])) {
+                    Converter::convertVideo($link);
+
+                    $metadata = MediaInfo::getNullMetadataForVideo();
+                    $size = 0;
+                } else {
+                    $metadata = MediaInfo::getMetadata($type, $link);
+                    $size = MediaInfo::getSize($link);
+                }
+
                 $link = preg_replace('/[.]\\w*/', '.mp4', $link);
+            } else {
+                $metadata = MediaInfo::getMetadata($type, $link);
+                $size = MediaInfo::getSize($link);
+
             }
             
             if ($extension == "php" || $extension == "phtml") {
@@ -55,14 +113,16 @@ class MainController
 
             $comment = trim(mb_substr(strval($data['comment']), 0, 30));
             $date = date("Y-m-d H:i:s");
-            $metadata = MediaInfo::getMetadata($type, $link);
-            $size = MediaInfo::getSize($link);
+
+            // $metadata = MediaInfo::getMetadata($type, $link);
+            // $size = MediaInfo::getSize($link);
             
             $file = new File($nameId, $name, $link, $comment, $type, $date, $size, $metadata);
             $fileId = $this->filesTable->addFile($file);
             $this->sphinxSearch->add($fileId, $file);
 
             return $response->getBody()->write($nameId);
+            exit;
         }  else {
             echo "Error";
         }
@@ -78,7 +138,6 @@ class MainController
         return pathinfo($filename, PATHINFO_EXTENSION);
     }
 
-    //сохранение и переименование файла
     private function moveUploadedFile(string $directory, UploadedFile $uploadedFile, string $extension): string
     {
         if ($extension == "php" || $extension == "phtml") {

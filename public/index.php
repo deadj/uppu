@@ -10,7 +10,7 @@ $container = $app->getContainer();
 
 $container['view'] = function ($container) {
     $view = new \Slim\Views\Twig('../src/Templates/', [
-            'cache' => false
+        'cache' => false
     ]);
     return $view;
 };
