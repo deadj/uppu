@@ -7,7 +7,7 @@ source base
     sql_db          = 
     sql_port        = 3306 
 
-    sql_query_pre                   = SET NAMES utf8
+    sql_query_pre   = SET NAMES utf8
 }
 
 source src_files: base
@@ -39,6 +39,7 @@ index rt_files
     rt_attr_timestamp = date
     rt_attr_uint      = size
     rt_attr_json      = metadata
+    rt_attr_uint       = uploadIsDone
 
     rt_mem_limit = 32M
 }

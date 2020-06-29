@@ -17,17 +17,6 @@ while (1) {
   	} 
 }
 
-// function convertVideo($job)
-// {
-// 	$link = "public/" . $job->workload();
-// 	$newLink = preg_replace('/[.]\\w*/', '.mp4', $link);
-
-// 	$process = new Process(['ffmpeg', '-i', $link, '-q:v', '1', '-c:v', 'h264', $newLink]);
-//     $process->run();
-
-//     unlink($link);
-// }
-
 function convertVideo($job)
 {
     $db = include('src/dbConfig.php');
@@ -50,5 +39,5 @@ function convertVideo($job)
     $size = MediaInfo::getSize($newLinkForConvert);
 
     $filesTable = new FilesTable($pdo);
-    $filesTable->updateMetadata($nameId, $metadata, $size);
+    $filesTable->updateMetadata($nameId, $metadata, $size, 1);
 }

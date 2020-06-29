@@ -5,13 +5,19 @@ Dropzone.options.myDropzone = {
     maxFiles: 1,
 
     init: function () {
-
         var myDropzone = this;
 
         $("#uploadButton").click(function (e) {
             var name = document.getElementById('name').value;
 
             if (!name.trim() == "") {
+                var uploadButton = document.getElementById('uploadButton');
+                uploadButton.disabled = true;
+                var uploadImg = document.createElement('img');
+                uploadImg.src = "/img/ajax-loader.gif";
+                uploadButton.innerHTML = "";
+                uploadButton.appendChild(uploadImg);
+
                 e.preventDefault();
                 myDropzone.processQueue();
             }
@@ -31,11 +37,19 @@ Dropzone.options.myDropzone = {
 
                 myDropzone.removeFile(file);
                 myDropzone.setupEventListeners();
+
+                deleteButton.style.display = "none";
+                var uploadButton = document.getElementById('uploadButton');
+                uploadButton.disabled = false;
+                uploadButton.innerHTML = "Загрузить";
             });
         });
 
         this.on("error", function (file) {
             myDropzone.removeEventListeners();
+
+            var uploadButton = document.getElementById('uploadButton');
+            uploadButton.disabled = false;
         }); 
 
         this.on('sending', function(file, xhr, formData) {

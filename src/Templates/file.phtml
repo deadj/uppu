@@ -1,29 +1,52 @@
-{% include "DuplicateItems/header.phtml" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Uppu</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/file.css">
+    <script type="text/javascript" src="/js/dropzone/dist/dropzone.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
+</head>
+<body>
+    <header>
+        <h1><a href="/">Uppu</a></h1>
+        <form class="searchBlock" action="/search" method="GET">
+            <input type="text" name="text">
+            <input type="submit" value="Искать">
+        </form>
+        <a href="/list"><h3>Список последних файлов</h3></a>
+    </header>
     <input type="hidden" id="fileId" value="{{ filesData.nameId }}">
     <div>
         <div class="fileBlock">
-            {% if filesData.type == "video" %}
-                <video src="/{{ filesData.link }}" width="350" controls></video>
-            {% elseif filesData.type == "audio" %}
-                <audio src="/{{ filesData.link }}" controls></audio>
-            {% elseif filesData.type == "image" %}
-                <img id="imgFile" src="/{{ filesData.link }}" width="350">
-            {% endif %}
-            <ul class="fileInfo">
-                <li>Название: {{ filesData.name }}</li>
-                {% if size <= 1000 %}
-                    <li>Размер: {{ filesData.size }} Кб.</li>
-                {% else %}
-                    <li>Размер: {{ filesData.size / 1000}} Мб.</li>
+            {% if filesData.uploadIsDone == 1 %}
+                {% if filesData.type == "video" %}
+                    <video src="/{{ filesData.link }}" width="350" controls></video>
+                {% elseif filesData.type == "audio" %}
+                    <audio src="/{{ filesData.link }}" controls></audio>
+                {% elseif filesData.type == "image" %}
+                    <img id="imgFile" src="/{{ filesData.link }}" width="350">
                 {% endif %}
-                <li>Дата загрузки: {{ filesData.date }}</li>
-                <li>Комментарий: {{ filesData.comment }}</li>
+                <ul class="fileInfo">
+                    <li>Название: {{ filesData.name }}</li>
+                    {% if size <= 1000 %}
+                        <li>Размер: {{ filesData.size }} Кб.</li>
+                    {% else %}
+                        <li>Размер: {{ filesData.size / 1000}} Мб.</li>
+                    {% endif %}
+                    <li>Дата загрузки: {{ filesData.date }}</li>
+                    <li>Комментарий: {{ filesData.comment }}</li>
 
-                {% for data in filesData.metadata %}
-                    <li>{{ data.dataName }}: {{ data.value }}</li>
-                {% endfor %}
-            </ul>
-            <a class="uploadButton" href="/{{ filesData.link }}" download="">Скачать</a>
+                    {% for data in filesData.metadata %}
+                        <li>{{ data.dataName }}: {{ data.value }}</li>
+                    {% endfor %}
+                </ul>
+                <a class="uploadButton" href="/{{ filesData.link }}" download="">Скачать</a>
+            {% else %}
+                <img src="/img/ajax-loader.gif"> Файл обрабатывается. Проверьте позже.
+            {% endif %}
         </div>
     </div>
         {% if comments|length > 0 %}

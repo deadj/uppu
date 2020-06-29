@@ -1,4 +1,23 @@
-{% include "DuplicateItems/header.phtml" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Uppu</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="/js/dropzone/dist/dropzone.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="/js/dropzone/dist/dropzone.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
+</head>
+<body>
+    <header>
+        <h1><a href="/">Uppu</a></h1>
+        <form class="searchBlock" action="/search" method="GET">
+            <input type="text" name="text">
+            <input type="submit" value="Искать">
+        </form>
+        <a href="/list"><h3>Список последних файлов</h3></a>
+    </header>
     <form action="/" method="POST" id="myForm" class="uploadForm">
         <input type="text" name="name" id="name" placeholder="Название (не более 30 символов)" maxlength="30" required>
         <input type="text" name="comment" placeholder="Комментарий (не более 50 символов)" maxlength="50">
@@ -12,7 +31,7 @@
             </div>
         </div>
         <input class="deleteButton" type="submit" value="Удалить файл" id="deleteButton">
-        <input type="submit" value="Загрузить" id="uploadButton">
+        <button id="uploadButton">Загрузить</button>
     </form>
     <script src="js/forFiles/main.js"></script>
 </body> 

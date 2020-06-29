@@ -27,7 +27,6 @@ class SphinxSearch
 
 	public function add(int $id, File $file): void
 	{
-
 		$statement = $this->pdo->prepare("INSERT INTO rt_files (
 			id,
             nameId, 
@@ -37,7 +36,8 @@ class SphinxSearch
             type, 
             date, 
             size,
-            metadata
+            metadata,
+            uploadIsDone
         ) VALUES (
         	:id,
             :nameId, 
@@ -47,7 +47,8 @@ class SphinxSearch
             :type, 
             :date, 
             :size,
-            :metadata
+            :metadata,
+            :uploadIsDone
         )");
 
 		$statement->bindValue(':id', $id);
@@ -59,6 +60,7 @@ class SphinxSearch
         $statement->bindValue(':date', $file->getDate());
         $statement->bindValue(':size', $file->getSize());
         $statement->bindValue(':metadata', json_encode($file->getMetadata()));
+        $statement->bindValue(':uploadIsDone', $file->getUploadIsDone());
 
         $statement->execute();
 	}

@@ -55,7 +55,8 @@ class FilesTable
             type, 
             date, 
             size,
-            metadata
+            metadata,
+            uploadIsDone
         ) VALUES (
             :nameId, 
             :name, 
@@ -64,7 +65,8 @@ class FilesTable
             :type, 
             :date, 
             :size,
-            :metadata
+            :metadata,
+            :uploadIsDone
         )");
 
         $statement->bindValue(':nameId', $file->getNameId());
@@ -75,6 +77,7 @@ class FilesTable
         $statement->bindValue(':date', $file->getDate());
         $statement->bindValue(':size', $file->getSize());
         $statement->bindValue(':metadata', json_encode($file->getMetadata()));
+        $statement->bindValue(':uploadIsDone', $file->getUploadIsDone());
 
         $statement->execute();
 
@@ -100,12 +103,22 @@ class FilesTable
         return $filesList;
     }
 
-    public function updateMetadata(string $nameId, $metadata, int $size): void
+    public function updateMetadata(
+        string $nameId, 
+        $metadata, 
+        int $size, 
+        int $uploadIsDone
+    ): void
     {
-        $statement = $this->pdo->prepare("UPDATE files SET size = :size, metadata = :metadata WHERE nameId = :nameId");
+        $statement = $this->pdo->prepare("UPDATE files SET 
+            size = :size, 
+            metadata = :metadata,
+            uploadIsDone = :uploadIsDone 
+        WHERE nameId = :nameId");
 
         $statement->bindValue(':size', $size);
         $statement->bindValue(':metadata', json_encode($metadata));
+        $statement->bindValue(':uploadIsDone', $uploadIsDone);
         $statement->bindValue(':nameId', $nameId);
 
         $statement->execute();
@@ -121,7 +134,8 @@ class FilesTable
             $row->type,
             $row->date,
             $row->size,
-            json_decode($row->metadata)
+            json_decode($row->metadata),
+            $row->uploadIsDone
         );
 
         return $file;       

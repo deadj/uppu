@@ -32,7 +32,8 @@ class FileController
 				'date' => $file->getDate(),
 				'type' => $file->getType(),
 				'size' => $file->getSize(),
-				'metadata' => $file->getMetadata()
+				'metadata' => $file->getMetadata(),
+				'uploadIsDone' => $file->getUploadIsDone()
 			),
 			'comments' => $comments
 		]);

@@ -10,6 +10,7 @@ class File
     private $date;
     private $size;
     private $metadata;
+    private $uploadIsDone;
 
     public function __construct(
         string $nameId, 
@@ -19,7 +20,8 @@ class File
         string $type, 
         string $date, 
         int $size, 
-        array $metadata
+        array $metadata,
+        int $uploadIsDone
     ){
         $this->nameId = $nameId;
         $this->name = $name;
@@ -29,6 +31,7 @@ class File
         $this->date = $date;
         $this->size = $size;
         $this->metadata = $metadata;
+        $this->uploadIsDone = $uploadIsDone;
     }
 
     public function getNameId(): string
@@ -76,4 +79,8 @@ class File
         return $this->metadata;
     }
 
+    public function getUploadIsDone(): int 
+    {
+        return $this->uploadIsDone;
+    }
 }

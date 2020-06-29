@@ -25,7 +25,7 @@ class MainController
         return $this->view->render($response, 'main.phtml');
     }
 
-    // public function uploadFile($request, $response, $args)
+    // public function uploadFileOld($request, $response, $args)
     // {
     //     $data = $request->getParsedBody();
     //     $uploadedFiles = $request->getUploadedFiles();
@@ -95,16 +95,18 @@ class MainController
 
                     $metadata = MediaInfo::getNullMetadataForVideo();
                     $size = 0;
+                    $uploadIsDone = 0;
                 } else {
                     $metadata = MediaInfo::getMetadata($type, $link);
                     $size = MediaInfo::getSize($link);
+                    $uploadIsDone = 1;
                 }
 
                 $link = preg_replace('/[.]\\w*/', '.mp4', $link);
             } else {
                 $metadata = MediaInfo::getMetadata($type, $link);
                 $size = MediaInfo::getSize($link);
-
+                $uploadIsDone = 1;
             }
             
             if ($extension == "php" || $extension == "phtml") {
@@ -113,16 +115,12 @@ class MainController
 
             $comment = trim(mb_substr(strval($data['comment']), 0, 30));
             $date = date("Y-m-d H:i:s");
-
-            // $metadata = MediaInfo::getMetadata($type, $link);
-            // $size = MediaInfo::getSize($link);
             
-            $file = new File($nameId, $name, $link, $comment, $type, $date, $size, $metadata);
+            $file = new File($nameId, $name, $link, $comment, $type, $date, $size, $metadata, $uploadIsDone);
             $fileId = $this->filesTable->addFile($file);
-            $this->sphinxSearch->add($fileId, $file);
+            // $this->sphinxSearch->add($fileId, $file);
 
             return $response->getBody()->write($nameId);
-            exit;
         }  else {
             echo "Error";
         }

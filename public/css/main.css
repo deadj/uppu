@@ -62,6 +62,8 @@ input[type="submit"], button {
 	height: 50px;
 	margin-top: 20px;	
 	margin-bottom: 0px;
+	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
+	border: none;
 }
 
 input[type="submit"]:not(.deleteButton), button {
