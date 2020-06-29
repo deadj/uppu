@@ -10,7 +10,7 @@ Dropzone.options.myDropzone = {
         $("#uploadButton").click(function (e) {
             var name = document.getElementById('name').value;
 
-            if (!name.trim() == "") {
+            if (!name.trim() == "" && myDropzone.files.length != 0) {
                 var uploadButton = document.getElementById('uploadButton');
                 uploadButton.disabled = true;
                 var uploadImg = document.createElement('img');
@@ -30,6 +30,8 @@ Dropzone.options.myDropzone = {
         this.on("addedfile", function (file) {
             var deleteButton = document.getElementById("deleteButton");
             deleteButton.style.display = "block";
+            var uploadButton = document.getElementById("uploadButton");
+            uploadButton.style.display = "block";
 
             deleteButton.addEventListener("click", function (e) {
                 e.preventDefault();
@@ -39,9 +41,9 @@ Dropzone.options.myDropzone = {
                 myDropzone.setupEventListeners();
 
                 deleteButton.style.display = "none";
-                var uploadButton = document.getElementById('uploadButton');
+                var uploadButton = document.getElementById("uploadButton");
+                uploadButton.style.display = "none";
                 uploadButton.disabled = false;
-                uploadButton.innerHTML = "Загрузить";
             });
         });
 

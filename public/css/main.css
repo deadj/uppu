@@ -107,3 +107,7 @@ input[type="file"] {
 	display: none;
 }
 
+.uploadButton {
+	display: none;
+}
+
