@@ -29,9 +29,6 @@ class Converter
 	        //     echo "error convert";
 	        //     exit;
 	        // } 
-        } else {
-        	echo "ihgjfihf";
-        	exit;
-        }		
+        }	
 	}
 }

@@ -43,6 +43,7 @@ Dropzone.options.myDropzone = {
                 deleteButton.style.display = "none";
                 var uploadButton = document.getElementById("uploadButton");
                 uploadButton.style.display = "none";
+                uploadButton.innerHTML = "Загрузить";
                 uploadButton.disabled = false;
             });
         });

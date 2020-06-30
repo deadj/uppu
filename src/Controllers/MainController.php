@@ -75,56 +75,13 @@ class MainController
             
             $file = new File($nameId, $name, $link, $comment, $type, $date, $size, $metadata, $uploadIsDone);
             $fileId = $this->filesTable->addFile($file);
-            // $this->sphinxSearch->add($fileId, $file);
+            $this->sphinxSearch->add($fileId, $file);
 
             return $response->getBody()->write($nameId);
         }  else {
             echo "Error";
         }
     }
-
-    // public function uploadFileOld($request, $response, $args)
-    // {
-    //     $data = $request->getParsedBody();
-    //     $uploadedFiles = $request->getUploadedFiles();
-    //     $uploadedFile = $uploadedFiles['file'];
-
-    //     if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-    //         $folderPath = $this->fileDirectory . date("m_d_y");
-    //         $extension = $this->getExtension($uploadedFile->getClientFilename());
-            
-    //         if (!file_exists($folderPath)) {
-    //             mkdir($folderPath);
-    //         }
-
-    //         $nameId = Helper::moveUploadedFile($folderPath . "/", $uploadedFile, $extension);
-    //         $name = strval(trim($data['name']));
-    //         $type = preg_replace('/\\/\\w*/', '', $uploadedFile->getClientMediaType());
-    //         $link = $this->createFilesLink($folderPath, $nameId, $uploadedFile->getClientFilename());
-
-    //         if ($type == "video") {
-    //             Converter::convertVideo($link);
-    //             $link = preg_replace('/[.]\\w*/', '.mp4', $link);
-    //         }
-            
-    //         if ($extension == "php" || $extension == "phtml") {
-    //             $link = preg_replace('/[.](php|phtml)$/', '.txt', $link);
-    //         }
-
-    //         $comment = trim(mb_substr(strval($data['comment']), 0, 30));
-    //         $date = date("Y-m-d H:i:s");
-    //         $metadata = MediaInfo::getMetadata($type, $link);
-    //         $size = MediaInfo::getSize($link);
-            
-    //         $file = new File($nameId, $name, $link, $comment, $type, $date, $size, $metadata);
-    //         $fileId = $this->filesTable->addFile($file);
-    //         $this->sphinxSearch->add($fileId, $file);
-
-    //         return $response->getBody()->write($nameId);
-    //     }  else {
-    //         echo "Error";
-    //     }
-    // }
 
     private function createFilesLink(string $folderPath, string $nameId, string $clientFilename): string
     {

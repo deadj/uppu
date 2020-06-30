@@ -13,7 +13,7 @@ source base
 source src_files: base
 {  
     sql_query       = \
-        SELECT id, nameId, name, link, comment, type, UNIX_TIMESTAMP(date) AS date, size, metadata \
+        SELECT id, nameId, name, link, comment, type, UNIX_TIMESTAMP(date) AS date, size, metadata, uploadIsDone \
         FROM files
 }
 
@@ -38,8 +38,8 @@ index rt_files
     rt_attr_string    = type
     rt_attr_timestamp = date
     rt_attr_uint      = size
+    rt_attr_uint      = uploadIsDone
     rt_attr_json      = metadata
-    rt_attr_uint       = uploadIsDone
 
     rt_mem_limit = 32M
 }
