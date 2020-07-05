@@ -72,11 +72,12 @@ async function updateComments(){
 
     createCommentsTree(commentsList, commentsBlock);
 
+    newCommentsText.value = "";
+    
     var body = document.getElementsByTagName('body')[0];
     body.removeChild(document.getElementById('commentsBlock'));
     body.insertBefore(commentsBlock, document.getElementById('newCommentBlock'));
 }
-
 
 function createCommentsTree(comments, commentsBlock){
     for (var id in comments) {
