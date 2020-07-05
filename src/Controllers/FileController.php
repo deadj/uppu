@@ -68,9 +68,11 @@ class FileController
 		$data = $request->getParsedBody();
 		$fileId = $data['fileId'];
 
-		$commentsList = $this->commentsTable->getListForFile($fileId);
+		$comments = $this->commentsTable->getListForFile($fileId);
+		$comments = $this->convertCommentsObjectToArray($comments);
+		$commentsTree = $this->createCommentsTreeForJSUpdate($comments);
 
-		return $response->withJson($this->convertCommentsObjectToArray($commentsList));		
+		return $response->withJson($commentsTree);		
 	}
 
 	private function createCommentsTree(array $comments): array
@@ -113,12 +115,49 @@ class FileController
 
 		foreach ($comments as $comment) {
 			$commentsArray[] = array(
+				'id' => $comment->getId(),
 				'text' => $comment->getText(),
-				'date' => $comment->getDate()
+				'date' => $comment->getDate(),
+				'parentId' => $comment->getParentId()
 			);
 		}
 
 		return $commentsArray;
 	}
+
+	private function createCommentsTreeForJSUpdate(array $comments): array
+	{
+		$parents = array();
+
+		if (!empty($comments)) {
+			foreach ($comments as $comment) {
+				$parents[$comment['parentId']][$comment['id']] = $comment;
+			}
+
+			$treeElem = reset($parents);
+			$this->generateElemTreeForJSUpdate($treeElem, $parents);
+
+			return $treeElem;			
+		} else {
+			return array();
+		}
+	}
+
+	private function generateElemTreeForJSUpdate(&$treeElem, array $parents): void
+	{
+		foreach ($treeElem as $key => $comment)
+		{
+			if (!isset($comment->children)) {
+				$treeElem[$key]['children'] = [];
+			}
+
+			if (array_key_exists($key, $parents)) {
+				$treeElem[$key]['children'] = $parents[$key];
+				$this->generateElemTreeForJSUpdate($treeElem[$key]['children'], $parents);
+			}
+		}
+	}
+
+
 
 }

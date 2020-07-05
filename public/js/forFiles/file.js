@@ -70,29 +70,37 @@ async function updateComments(){
     commentsBlock.classList.add("commentsBlock");
     commentsBlock.id = "commentsBlock";
 
-    for (var i = 0; i < commentsList.length; i++) {
+    createCommentsTree(commentsList, commentsBlock);
+
+    var body = document.getElementsByTagName('body')[0];
+    body.removeChild(document.getElementById('commentsBlock'));
+    body.insertBefore(commentsBlock, document.getElementById('newCommentBlock'));
+}
+
+
+function createCommentsTree(comments, commentsBlock){
+    for (var id in comments) {
         template = document.getElementById('templateComment').innerHTML;
-        template = template.replace('[[date]]', commentsList[i].date);
-        template = template.replace('[[text]]', commentsList[i].text);
-        
+        template = template.replace('[[id]]', comments[id].id);
+        template = template.replace('[[date]]', comments[id].date);
+        template = template.replace('[[text]]', comments[id].text);
+
         var comment = document.createElement('div');
-        comment.classList.add("comment");        
+        comment.classList.add("comment");
         comment.innerHTML = template;
 
         var a = document.createElement("a");
         a.innerHTML = "Ответить";
         a.name = "replyButton";
-        a.setAttribute("onclick", "printReplyToComment(this)");
-
+        a.setAttribute("onclick", "printReplyToComment(this)");  
         comment.appendChild(a);
+
         commentsBlock.appendChild(comment);
+        
+        if (comments[id].children.length != 0) {
+            createCommentsTree(comments[id].children, comment);
+        } 
     }
-
-    newCommentsText.value = "";
-
-    var body = document.getElementsByTagName('body')[0];
-    body.removeChild(document.getElementById('commentsBlock'));
-    body.insertBefore(commentsBlock, document.getElementById('newCommentBlock'));
 }
 
 function printReplyToComment(comment) {

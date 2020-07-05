@@ -67,6 +67,7 @@
         <button id="replyCommentButton" onclick="replyComment(this)">Отправить</button>
     </script>
     <script type="text/x-template" id="templateComment">
+        <input type="hidden" name="commentId" value="[[id]]">
         <h5>[[date]]</h5>
         <p>[[text]]</p>
     </script>
@@ -75,9 +76,8 @@
 </html>
 
 {% macro printComments(comments) %}
-    {% set indent = 0 %}
     {% for comment in comments %}
-        <div style="margin-left: 25px"class="comment">
+        <div class="comment">
             <input type="hidden" name="commentId" value="{{ comment.id }}">
             <h5>{{ comment.date }}</h6>
             <p>{{ comment.text }}</p>
