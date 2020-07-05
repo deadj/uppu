@@ -45,18 +45,34 @@
 
 .comment {
 	display: block;
-	border-bottom: 1px solid grey;
-	padding: 10px 0px;
+	border-top: 1px solid grey;
+	padding: 0px;
+	padding-left: -30px;
 	text-align: left;
+}
+
+.comment a {
+	display: block;
+	text-align: right;
+	margin-bottom: 10px;
+	margin-right: 2px;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.commentsBlock .comment:first-child {
+	border-top: none;
 }
 
 .comment p {
 	padding: 0px;
+	margin: 5px;
 }
 
 .comment h5 {
-	margin: 0px;
+	margin: 5px;
 	font-weight: normal;
+	font-size: 11px;
 }
 
 .newCommentBlock textarea {
@@ -115,11 +131,6 @@ button {
 .replyToCommentBlock {
 	padding: 0px;
 	margin: 0px;
+	margin-bottom: 5px;
 	width: 100%;
-}
-
-.comment a {
-	display: block;
-	text-align: right;
-	margin-bottom: 10px;
 }

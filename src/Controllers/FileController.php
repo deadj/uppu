@@ -35,7 +35,7 @@ class FileController
 				'metadata' => $file->getMetadata(),
 				'uploadIsDone' => $file->getUploadIsDone()
 			),
-			'comments' => $comments
+			'comments' => $this->createCommentsTree($comments)
 		]);
 	}
 
@@ -71,6 +71,40 @@ class FileController
 		$commentsList = $this->commentsTable->getListForFile($fileId);
 
 		return $response->withJson($this->convertCommentsObjectToArray($commentsList));		
+	}
+
+	private function createCommentsTree(array $comments): array
+	{
+		$parents = array();
+
+		if (!empty($comments)) {
+			foreach ($comments as $comment) {
+				$parents[$comment->getParentId()][$comment->getId()] = $comment;
+			}
+
+			$treeElem = reset($parents);
+			$this->generateElemTree($treeElem, $parents);
+
+			return $treeElem;			
+		} else {
+			return array();
+		}
+
+	}
+
+	private function generateElemTree(&$treeElem, array $parents): void
+	{
+		foreach ($treeElem as $key => $comment)
+		{
+			if (!isset($comment->children)) {
+				$treeElem[$key]->children = [];
+			}
+
+			if (array_key_exists($key, $parents)) {
+				$treeElem[$key]->children = $parents[$key];
+				$this->generateElemTree($treeElem[$key]->children, $parents);
+			}
+		}
 	}
 
 	private function convertCommentsObjectToArray(array $comments): array

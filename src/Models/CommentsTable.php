@@ -65,6 +65,21 @@ class CommentsTable
 		return $list;
 	}
 
+	public function getListTest(string $fileId)
+	{
+		$statement = $this->pdo->prepare("SELECT * FROM comments WHERE fileId = :fileId");
+		$statement->bindValue(':fileId', $fileId);
+		$statement->execute();
+
+		$list = array();
+
+		while ($row = $statement->fetch(PDO::FETCH_OBJ)) {
+			$list[] = $this->createCommnet($row);
+		}
+
+		return $list;
+	}
+
 	private function createCommnet(object $row): object
 	{
 		$comment = new Comment(

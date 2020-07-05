@@ -2,7 +2,7 @@ newCommentBlock.onsubmit = async function(e){
     e.preventDefault();
 
     addCommentButton.disabled = true;
-    addCommentButton.innerHTML = "<img src='img/ajax-loader.gif'>";
+    addCommentButton.innerHTML = "<img src='/img/ajax-loader.gif'>";
 
     var url = '/addComment';
 
@@ -79,13 +79,12 @@ async function updateComments(){
         comment.classList.add("comment");        
         comment.innerHTML = template;
 
-        // var a = document.createElement("a");
-        // a.innerHTML = "Ответить";
-        // a.name = "replyButton";
-        // a.setAttribute("onclick", "printReplyToComment(this)");
+        var a = document.createElement("a");
+        a.innerHTML = "Ответить";
+        a.name = "replyButton";
+        a.setAttribute("onclick", "printReplyToComment(this)");
 
-        // comment.appendChild(p);
-
+        comment.appendChild(a);
         commentsBlock.appendChild(comment);
     }
 
@@ -96,69 +95,67 @@ async function updateComments(){
     body.insertBefore(commentsBlock, document.getElementById('newCommentBlock'));
 }
 
-// function printReplyToComment(comment) {
-//     var searchElement = comment.parentNode.getElementsByTagName('form').length;
+function printReplyToComment(comment) {
+    if (comment.innerHTML === "Закрыть") {
+        replyToCommentBlock.parentNode.querySelector('a').innerHTML = "Ответить";
+        replyToCommentBlock.parentNode.removeChild(replyToCommentBlock);        
+    } else if (comment.innerHTML === "Ответить") {
+        var searchBlock = document.querySelector('.replyToCommentBlock');
 
-//     if (searchElement === 0) {
-//         var replyTemplate = templateReplyComment.innerHTML;
-//         var newCommentBlock = document.createElement('div');
-//         newCommentBlock.classList.add('replyToCommentBlock');
-//         newCommentBlock.innerHTML = replyTemplate;
+        if (searchBlock) {
+            searchBlock.parentNode.querySelector('a').innerHTML = "Ответить";
+            searchBlock.parentNode.removeChild(searchBlock);  
+            createReplyBlock(comment);
+        } else {
+            createReplyBlock(comment);
+        }          
+    } 
+}
 
-//         var replyButton = comment.parentNode.querySelector('a');
-//         replyButton.innerHTML = "Закрыть";
-//         comment.parentNode.appendChild(newCommentBlock);
-//     } else {
-//         var form = comment.parentNode.getElementsByTagName('form')[0];
-//         comment.parentNode.removeChild(form);
+function createReplyBlock(comment){
+    var replyTemplate = templateReplyComment.innerHTML;
+    var newCommentBlock = document.createElement('div');
+    newCommentBlock.classList.add('replyToCommentBlock');
+    newCommentBlock.id = "replyToCommentBlock";
+    newCommentBlock.innerHTML = replyTemplate;
 
-//         var replyButton = comment.parentNode.querySelector('a');
-//         replyButton.innerHTML = "Ответить";
-//     }   
-// }
+    var replyButton = comment.parentNode.querySelector('a').innerHTML = "Закрыть";
 
-// async function replyComment(e) {
-//     e.disabled = true;
-//     e.innerHTML = "<img src='img/ajax-loader.gif'>";
+    comment.parentNode.appendChild(newCommentBlock);      
+}
 
-//     var replyBlock = e.parentNode.parentNode;
-//     var comment = replyBlock.querySelector("div input[name='comment'").value;
-//     var parentId = replyBlock.querySelector("input[name='commentId'").value;
+async function replyComment(e) {
+    e.disabled = true;
+    e.innerHTML = "<img src='/img/ajax-loader.gif'>";
 
-//     var url = '/addComment';
+    var replyBlock = e.parentNode.parentNode;
+    var comment = replyBlock.querySelector("div input[name='comment'").value;
+    var parentId = replyBlock.querySelector("input[name='commentId'").value;
 
-//     var formData = new FormData();
+    var url = '/addComment';
 
-//     formData.append('comment', comment);
-//     formData.append('fileId', fileId.value);
-//     formData.append('parentId', parentId);
+    var formData = new FormData();
 
-//     var response = await fetch(url, {
-//         method: 'POST',
-//         body: formData
-//     });
+    formData.append('comment', comment);
+    formData.append('fileId', fileId.value);
+    formData.append('parentId', parentId);
 
-//     if (response.ok) {
-//         updateComments();
+    var response = await fetch(url, {
+        method: 'POST',
+        body: formData
+    });
 
-//         var windowHeight = document.documentElement.clientHeight;
-//         var windowWidth = document.documentElement.clientWidth;
+    if (response.ok) {
+        if (await response.text() == 1) {
+            updateComments();
+            createPopup("Комментарий отправлен");            
+        } else {
+            createPopup("Нельзя отправить пустой комментарий");
+        }
 
-//         var commentPopup = document.createElement('div');
-//         commentPopup.classList.add("commentPopup");
-//         commentPopup.id = "commentPopup";
-//         commentPopup.innerHTML = "Комментарий отправлен";
-
-//         commentPopup.style.top = windowHeight - 100 + "px";
-//         commentPopup.style.left = windowWidth - 220 + "px";
-
-//         var body = document.getElementsByTagName('body')[0];
-//         body.appendChild(commentPopup);
-
-//         setTimeout(closeCommentPopup, 2000);
-
-//         replyBlock.removeChild(replyBlock.querySelector('.replyToCommentBlock'));
-//     } else {
-//         alert("error");
-//     }  
-// }
+        addCommentButton.disabled = false;
+        addCommentButton.innerHTML = "Отправить";
+    } else {
+        alert("error");
+    }  
+}

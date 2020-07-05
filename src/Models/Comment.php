@@ -7,6 +7,7 @@ class Comment
 	private $text;
 	private $date;
 	private $parentId;
+	private $childrenComments;
 
 	public function __construct(
 		int $id,
