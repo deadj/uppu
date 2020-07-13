@@ -1,7 +1,7 @@
 Dropzone.options.myDropzone = {
     url: "/",
     autoProcessQueue: false,
-    maxFilesize: 20,
+    maxFilesize: 100,
     maxFiles: 1,
 
     init: function () {

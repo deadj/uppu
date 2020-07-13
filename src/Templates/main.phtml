@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Uppu</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="css/main.css">
     <link href="/js/dropzone/dist/dropzone.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="/js/dropzone/dist/dropzone.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/tus-js-client@latest/dist/tus.min.js"></script>
 </head>
 <body>
     <header>
@@ -18,6 +19,12 @@
         </form>
         <a href="/list"><h3>Список последних файлов</h3></a>
     </header>
+<!--     <form action="/" method="POST" enctype="multipart/form-data" class="uploadForm">
+        <input type="file" name="file">
+        <input type="text" name="name" id="name" placeholder="Название (не более 30 символов)" maxlength="30" required>
+        <input type="text" name="comment" placeholder="Комментарий (не более 50 символов)" maxlength="50">
+        <input class="uploadButton" type="submit" value="Загрузить">
+    </form> -->
     <form action="/" method="POST" id="myForm" class="uploadForm">
         <input type="text" name="name" id="name" placeholder="Название (не более 30 символов)" maxlength="30" required>
         <input type="text" name="comment" placeholder="Комментарий (не более 50 символов)" maxlength="50">
@@ -34,5 +41,8 @@
         <button  class="uploadButton" id="uploadButton">Загрузить</button>
     </form>
     <script src="js/forFiles/main.js"></script>
+    <script type="text/javascript">
+        var upload = new tus.Upload();
+    </script>
 </body> 
 </html>

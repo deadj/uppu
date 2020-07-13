@@ -4,7 +4,11 @@ php_flag display_errors on
 php_flag display_startup_errors on
 
 RewriteEngine on
+
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^tus/?(.*)?$ /var/www/html/TusServer.php?$1 [QSA,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
 RewriteRule .* index.php 
+
