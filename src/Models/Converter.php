@@ -14,21 +14,7 @@ class Converter
 	        $gearmanClient = new GearmanCLient();
 	        $gearmanClient->addServer();
 
-			// echo "gfdgfdg";
-			// exit;
 	        $res = $gearmanClient->doBackground('convertVideo', $link);
-	        // echo $res;
-	        // exit;
-	        
-
-	        // if (!$process->isSuccessful()) {
-	        //     //echo $process->getErrorOutput();
-	        //     //Добавить сохранение логов
-	        //     //Добавить вывод ошибки при загрузке
-
-	        //     echo "error convert";
-	        //     exit;
-	        // } 
         }	
 	}
 }

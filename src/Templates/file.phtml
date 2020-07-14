@@ -63,7 +63,8 @@
         <button id="addCommentButton">Отправить</button>
     </form>
     <script type="text/x-template" id="templateReplyComment">
-        <input class="replyCommentField" type="text" name="comment">
+        <!-- <input class="replyCommentField" type="text" name="comment"> -->
+        <textarea class="replyCommentField" name="comment"></textarea>
         <button id="replyCommentButton" onclick="replyComment(this)">Отправить</button>
     </script>
     <script type="text/x-template" id="templateComment">
@@ -80,7 +81,7 @@
         <div class="comment">
             <input type="hidden" name="commentId" value="{{ comment.id }}">
             <h5>{{ comment.date }}</h6>
-            <p>{{ comment.text }}</p>
+            <p>{{ comment.text|nl2br }}</p>
             <a name="replyButton" onclick="printReplyToComment(this)">Ответить</a>
             {% if comment.children|length > 0 %}
                 {{ _self.printComments(comment.children) }}

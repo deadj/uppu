@@ -1,3 +1,5 @@
+setInterval(updateComments, 30000);
+
 newCommentBlock.onsubmit = async function(e){
     e.preventDefault();
 
@@ -9,6 +11,12 @@ newCommentBlock.onsubmit = async function(e){
     var formData = new FormData(newCommentBlock);
     formData.append('fileId', fileId.value);
     formData.append('parentId', 'NULL');
+
+    addComment(formData);
+}
+
+async function addComment(formData){
+    var url = '/addComment';
 
     var response = await fetch(url, {
         method: 'POST',
@@ -84,7 +92,10 @@ function createCommentsTree(comments, commentsBlock){
         template = document.getElementById('templateComment').innerHTML;
         template = template.replace('[[id]]', comments[id].id);
         template = template.replace('[[date]]', comments[id].date);
-        template = template.replace('[[text]]', comments[id].text);
+        
+        var text = comments[id].text;
+        text = text.replace(/\n/g, '<br>');
+        template = template.replace('[[text]]', text);
 
         var comment = document.createElement('div');
         comment.classList.add("comment");
@@ -138,8 +149,8 @@ async function replyComment(e) {
     e.innerHTML = "<img src='/img/ajax-loader.gif'>";
 
     var replyBlock = e.parentNode.parentNode;
-    var comment = replyBlock.querySelector("div input[name='comment'").value;
-    var parentId = replyBlock.querySelector("input[name='commentId'").value;
+    var comment = replyBlock.querySelector("div .replyCommentField").value;
+    var parentId = replyBlock.querySelector("input[name='commentId']").value;
 
     var url = '/addComment';
 
@@ -149,22 +160,5 @@ async function replyComment(e) {
     formData.append('fileId', fileId.value);
     formData.append('parentId', parentId);
 
-    var response = await fetch(url, {
-        method: 'POST',
-        body: formData
-    });
-
-    if (response.ok) {
-        if (await response.text() == 1) {
-            updateComments();
-            createPopup("Комментарий отправлен");            
-        } else {
-            createPopup("Нельзя отправить пустой комментарий");
-        }
-
-        addCommentButton.disabled = false;
-        addCommentButton.innerHTML = "Отправить";
-    } else {
-        alert("error");
-    }  
+    addComment(formData);
 }
