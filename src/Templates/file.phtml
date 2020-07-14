@@ -43,6 +43,8 @@
                     {% endfor %}
                 </ul>
                 <a class="uploadButton" href="/{{ filesData.link }}" download="">Скачать</a>
+            {% elseif filesData.uploadIsDone == 2 %}
+                <p>Извините, файл загружен с ошибкой. Страница скоро будет удалена. Попробуйте загрузить снова.</p>
             {% else %}
                 <img src="/img/ajax-loader.gif"> Файл обрабатывается. Проверьте позже.
             {% endif %}

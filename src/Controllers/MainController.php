@@ -41,14 +41,18 @@ class MainController
 
             $nameId = Helper::moveUploadedFile($folderPath . "/", $uploadedFile, $extension);
             $name = strval(trim($data['name']));
-            $type = preg_replace('/\\/\\w*/', '', $uploadedFile->getClientMediaType());
+            $type = $this->getFileType($uploadedFile->getClientMediaType());
             $link = $this->createFilesLink($folderPath, $nameId, $uploadedFile->getClientFilename());
 
             if ($type == "video") {
                 $fileData = $this->getID3->analyze($link);
+
                 if (!isset($this->fileData['video']['fourcc_lookup']) || 
                     !preg_match('/H[.]264/iu', $this->fileData['video']['fourcc_lookup'])) {
-                    Converter::convertVideo($link);
+
+                    $gearmanClient = new GearmanCLient();
+                    $gearmanClient->addServer();
+                    $res = $gearmanClient->doBackground('convertVideo', $link);
 
                     $metadata = MediaInfo::getNullMetadataForVideo();
                     $size = 0;
@@ -91,5 +95,18 @@ class MainController
     private function getExtension(string $filename): string
     {
         return pathinfo($filename, PATHINFO_EXTENSION);
+    }
+
+    private function getFileType(string $type): string
+    {
+        if (preg_match('/video/', $type)) {
+            return "video";
+        } elseif (preg_match('/image/', $type)) {
+            return "image";
+        } elseif (preg_match('/audio/', $type)) {
+            return "audio";
+        } else {
+            return "other";
+        }   
     }
 }

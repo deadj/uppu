@@ -38,7 +38,7 @@ class MediaInfo
 			$data = array(
 				array(
 					"dataName" => "Битрейт", 
-					"value" => $fileData['audio']['bitrade'] / 1000
+					"value" => $fileData['audio']['bitrate'] / 1000
 				), array(
 					"dataName" => "Время", 
 					"value" => $fileData['playtime_string']
