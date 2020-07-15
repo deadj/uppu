@@ -107,7 +107,7 @@ class FilesTable
         string $nameId, 
         $metadata, 
         int $size, 
-        int $uploadIsDone
+        string $uploadIsDone
     ): void
     {
         $statement = $this->pdo->prepare("UPDATE files SET 
@@ -126,7 +126,7 @@ class FilesTable
 
     public function getErrorFilesList(): array
     {
-        $statement = $this->pdo->prepare("SELECT * FROM files WHERE uploadIsDone = 2");
+        $statement = $this->pdo->prepare("SELECT * FROM files WHERE uploadIsDone = 'error'");
         $statement->execute();
 
         $list = array();

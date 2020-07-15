@@ -1,3 +1,3 @@
 <?php
 
-echo file_get_contents('http://localhost/deleteErrorFiles');
+file_get_contents('http://localhost/deleteErrorFiles');

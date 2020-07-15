@@ -21,7 +21,7 @@
     <input type="hidden" id="fileId" value="{{ filesData.nameId }}">
     <div>
         <div class="fileBlock">
-            {% if filesData.uploadIsDone == 1 %}
+            {% if filesData.uploadIsDone == "done" %}
                 {% if filesData.type == "video" %}
                     <video src="/{{ filesData.link }}" width="350" controls></video>
                 {% elseif filesData.type == "audio" %}
@@ -43,7 +43,7 @@
                     {% endfor %}
                 </ul>
                 <a class="uploadButton" href="/{{ filesData.link }}" download="">Скачать</a>
-            {% elseif filesData.uploadIsDone == 2 %}
+            {% elseif filesData.uploadIsDone == "error" %}
                 <p>Извините, файл загружен с ошибкой. Страница скоро будет удалена. Попробуйте загрузить снова.</p>
             {% else %}
                 <img src="/img/ajax-loader.gif"> Файл обрабатывается. Проверьте позже.

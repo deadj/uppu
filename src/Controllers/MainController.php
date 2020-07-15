@@ -58,18 +58,18 @@ class MainController
 
                     $metadata = MediaInfo::getNullMetadataForVideo();
                     $size = 0;
-                    $uploadIsDone = 0;
+                    $uploadIsDone = "null";
                 } else {
                     $metadata = MediaInfo::getMetadata($type, $link);
                     $size = MediaInfo::getSize($link);
-                    $uploadIsDone = 1;
+                    $uploadIsDone = "done";
                 }
 
                 $link = preg_replace('/[.]\\w*/', '.mp4', $link);
             } else {
                 $metadata = MediaInfo::getMetadata($type, $link);
                 $size = MediaInfo::getSize($link);
-                $uploadIsDone = 1;
+                $uploadIsDone = "done";
             }
             
             if ($extension == "php" || $extension == "phtml") {

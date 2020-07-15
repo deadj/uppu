@@ -21,7 +21,7 @@ class File
         string $date, 
         int $size, 
         array $metadata,
-        int $uploadIsDone
+        string $uploadIsDone
     ){
         $this->nameId = $nameId;
         $this->name = $name;
@@ -79,7 +79,7 @@ class File
         return $this->metadata;
     }
 
-    public function getUploadIsDone(): int 
+    public function getUploadIsDone(): string
     {
         return $this->uploadIsDone;
     }

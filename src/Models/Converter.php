@@ -31,9 +31,9 @@ class Converter
 	        $metadata = MediaInfo::getMetadata("video", $newLinkForConvert);
 	        $size = MediaInfo::getSize($newLinkForConvert);
 
-	        $filesTable->updateMetadata($nameId, $metadata, $size, 1);
+	        $filesTable->updateMetadata($nameId, $metadata, $size, "done");
 	    } else {
-	        $filesTable->updateMetadata($nameId, array(), 0, 2);
+	        $filesTable->updateMetadata($nameId, array(), 0, "error");
 	    }
 
     	unlink($linkForConvert);
