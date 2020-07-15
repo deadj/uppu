@@ -74,7 +74,7 @@ class FileController
 
 		return $response->withJson($commentsTree);		
 	}
-
+	
 	private function createCommentsTree(array $comments): array
 	{
 		$parents = array();
@@ -157,7 +157,5 @@ class FileController
 			}
 		}
 	}
-
-
 
 }

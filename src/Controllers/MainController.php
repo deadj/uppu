@@ -39,7 +39,9 @@ class MainController
                 mkdir($folderPath);
             }
 
-            $nameId = Helper::moveUploadedFile($folderPath . "/", $uploadedFile, $extension);
+            $helper = new Helper($this->db);
+            
+            $nameId = $helper->moveUploadedFile($folderPath . "/", $uploadedFile, $extension);
             $name = strval(trim($data['name']));
             $type = $this->getFileType($uploadedFile->getClientMediaType());
             $link = $this->createFilesLink($folderPath, $nameId, $uploadedFile->getClientFilename());

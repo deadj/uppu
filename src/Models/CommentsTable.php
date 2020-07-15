@@ -65,19 +65,11 @@ class CommentsTable
 		return $list;
 	}
 
-	public function getListTest(string $fileId)
+	public function deleteListForFile(string $fileId): void
 	{
-		$statement = $this->pdo->prepare("SELECT * FROM comments WHERE fileId = :fileId");
+		$statement = $this->pdo->prepare("DELETE FROM comments WHERE fileId = :fileId");
 		$statement->bindValue(':fileId', $fileId);
 		$statement->execute();
-
-		$list = array();
-
-		while ($row = $statement->fetch(PDO::FETCH_OBJ)) {
-			$list[] = $this->createCommnet($row);
-		}
-
-		return $list;
 	}
 
 	private function createCommnet(object $row): object

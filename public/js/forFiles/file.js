@@ -74,17 +74,19 @@ async function updateComments(){
 
     var commentsList = await response.json();
 
-    var commentsBlock = document.createElement('div');
-    commentsBlock.classList.add("commentsBlock");
-    commentsBlock.id = "commentsBlock";
+    if (commentsList.length != 0) {
+        var commentsBlock = document.createElement('div');
+        commentsBlock.classList.add("commentsBlock");
+        commentsBlock.id = "commentsBlock";
 
-    createCommentsTree(commentsList, commentsBlock);
+        createCommentsTree(commentsList, commentsBlock);
 
-    newCommentsText.value = "";
-    
-    var body = document.getElementsByTagName('body')[0];
-    body.removeChild(document.getElementById('commentsBlock'));
-    body.insertBefore(commentsBlock, document.getElementById('newCommentBlock'));
+        newCommentsText.value = "";
+        
+        var body = document.getElementsByTagName('body')[0];
+        body.removeChild(document.getElementById('commentsBlock'));
+        body.insertBefore(commentsBlock, document.getElementById('newCommentBlock'));
+    }
 }
 
 function createCommentsTree(comments, commentsBlock){

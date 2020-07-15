@@ -47,10 +47,16 @@ $container['SearchController'] = function($c){
     return new SearchController($view, $db);
 };
 
+$container['Helper'] = function($c){
+    $db = $c->get("db");
+    return new Helper($db);
+};
+
 $app->get('/', \MainController::class . ':printPage');
 $app->get('/search', \SearchController::class . ':search');
 $app->get('/list', \ListController::class . ':printPage');
 $app->get('/file/{nameId}', \FileController::class . ':printPage');
+$app->get('/deleteErrorFiles', \Helper::class . ':deleteErrorFiles');
 $app->post('/addComment', \FileController::class . ':addComment');
 $app->post('/getCommentsList', \FileController::class . ":getCommentsList");
 $app->post('/', \MainController::class . ':uploadFile');

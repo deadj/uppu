@@ -124,6 +124,32 @@ class FilesTable
         $statement->execute();
     }
 
+    public function getErrorFilesList(): array
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM files WHERE uploadIsDone = 2");
+        $statement->execute();
+
+        $list = array();
+
+        if ($statement->rowCount() != 0) {
+            while ($row = $statement->fetch(PDO::FETCH_OBJ)) {
+                $list[] = $this->createFile($row);
+            }
+
+            return $list;
+        } else {
+            return $list;
+        }
+    }
+
+    public function deleteFile(string $nameId): void
+    {
+        $statement = $this->pdo->prepare("DELETE FROM files WHERE nameId = :nameId");
+        $statement->bindValue(":nameId", $nameId);
+        $statement->execute();
+    }
+
+
     private function createFile(object $row): File
     {
         $file = new File(
