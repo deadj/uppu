@@ -6,18 +6,11 @@
     <title>Uppu</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/file.css">
-    <script type="text/javascript" src="/js/dropzone/dist/dropzone.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
 </head>
 <body>
-    <header>
-        <h1><a href="/">Uppu</a></h1>
-        <form class="searchBlock" action="/search" method="GET">
-            <input type="text" name="text">
-            <input type="submit" value="Искать">
-        </form>
-        <a href="/list"><h3>Список последних файлов</h3></a>
-    </header>
+    {% include 'DuplicateItems/header.phtml' %}
+    <input type="hidden" id="uploadStatus" value=" {{ uploadIsDone }}">
     <input type="hidden" id="fileId" value="{{ filesData.nameId }}">
     <div>
         <div class="fileBlock">
@@ -46,7 +39,7 @@
             {% elseif filesData.uploadIsDone == "error" %}
                 <p>Извините, файл загружен с ошибкой. Страница скоро будет удалена. Попробуйте загрузить снова.</p>
             {% else %}
-                <img src="/img/ajax-loader.gif"> Файл обрабатывается. Проверьте позже.
+                <img src="/img/ajax-loader.gif"> Файл обрабатывается
             {% endif %}
         </div>
     </div>
@@ -65,7 +58,6 @@
         <button id="addCommentButton">Отправить</button>
     </form>
     <script type="text/x-template" id="templateReplyComment">
-        <!-- <input class="replyCommentField" type="text" name="comment"> -->
         <textarea class="replyCommentField" name="comment"></textarea>
         <button id="replyCommentButton" onclick="replyComment(this)">Отправить</button>
     </script>

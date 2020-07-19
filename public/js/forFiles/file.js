@@ -1,4 +1,5 @@
 setInterval(updateComments, 30000);
+setInterval(reloadPage, 10000);
 
 newCommentBlock.onsubmit = async function(e){
     e.preventDefault();
@@ -13,6 +14,14 @@ newCommentBlock.onsubmit = async function(e){
     formData.append('parentId', 'NULL');
 
     addComment(formData);
+}
+
+function reloadPage(){
+    var uploadStatus = document.getElementById('uploadStatus');
+
+    if (uploadStatus != "done") {
+        window.location.reload();
+    }
 }
 
 async function addComment(formData){

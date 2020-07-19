@@ -8,31 +8,21 @@
     <link href="/js/dropzone/dist/dropzone.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="/js/dropzone/dist/dropzone.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
-    <script src="https://cdn.jsdelivr.net/npm/tus-js-client@latest/dist/tus.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1><a href="/">Uppu</a></h1>
-        <form class="searchBlock" action="/search" method="GET">
-            <input type="text" name="text">
-            <input type="submit" value="Искать">
-        </form>
-        <a href="/list"><h3>Список последних файлов</h3></a>
-    </header>
-    <form action="/" method="POST" id="myForm" class="uploadForm">
+    {% include 'DuplicateItems/header.phtml' %}
+    <form action="/" method="POST" enctype="multipart/form-data" id="myForm" class="uploadForm">
         <input type="text" name="name" id="name" placeholder="Название (не более 30 символов)" maxlength="30" required>
         <input type="text" name="comment" placeholder="Комментарий (не более 50 символов)" maxlength="50">
         <div class="dropzone" id="myDropzone" name="mainFileUploader">
-            <div class="dz-message d-flex flex-column">
-                <i class="material-icons text-muted">cloud_upload</i>
-                Кликните для выбора или перетащите файл в область
-            </div>
             <div class="fallback">
                 <input name="file" type="file">
+                <input type="hidden" name="notjs">
+                <button style="display: block;" class="uploadButton" id="uploadButton">Загрузить</button>
             </div>
         </div>
         <input class="deleteButton" type="submit" value="Удалить файл" id="deleteButton">
-        <button  class="uploadButton" id="uploadButton">Загрузить</button>
+        <button class="uploadButton" id="uploadButton">Загрузить</button>
     </form>
     <script src="js/forFiles/main.js"></script>
 </body> 

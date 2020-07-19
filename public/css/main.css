@@ -57,7 +57,7 @@ input {
 	vertical-align: top;
 }
 
-input[type="submit"], button {
+input[type="submit"], button:not(.dz-button) {
 	width: 100%;
 	height: 50px;
 	margin-top: 20px;	
@@ -108,6 +108,6 @@ input[type="file"] {
 }
 
 .uploadButton {
-	/*display: none;*/
+	display: none;
 }
 

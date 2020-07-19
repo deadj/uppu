@@ -6,17 +6,9 @@
     <title>Uppu</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/list.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
 </head>
 <body>
-    <header>
-        <h1><a href="/">Uppu</a></h1>
-        <form class="searchBlock" action="/search" method="GET">
-            <input type="text" name="text">
-            <input type="submit" value="Искать">
-        </form>
-        <a href="/list"><h3>Список последних файлов</h3></a>
-    </header>
+    {% include 'DuplicateItems/header.phtml' %}
     {% if filesList %}
         <table>
             <tr>

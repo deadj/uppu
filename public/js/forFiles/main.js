@@ -3,6 +3,8 @@ Dropzone.options.myDropzone = {
     autoProcessQueue: false,
     maxFilesize: 100,
     maxFiles: 1,
+    dictDefaultMessage: "Кликните для выбора или перетащите файл в область",
+    dictFallbackMessage: "",
 
     init: function () {
         var myDropzone = this;

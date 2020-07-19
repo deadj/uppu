@@ -83,7 +83,12 @@ class MainController
             $fileId = $this->filesTable->addFile($file);
             $this->sphinxSearch->add($fileId, $file);
 
-            return $response->getBody()->write($nameId);
+            if (isset($data['notjs'])) {
+                header("Location: http://localhost/file/" . $nameId);
+                exit;
+            } else {
+                return $response->getBody()->write($nameId);
+            }
         }  else {
             echo "Error";
         }
