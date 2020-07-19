@@ -9,15 +9,20 @@ class FilesTable
         $this->pdo = $db;
     }
 
-    public function getFileThroughNameId(string $nameId): File
+    public function getFileThroughNameId(string $nameId)
     {
         $statement = $this->pdo->prepare("SELECT * FROM files WHERE nameId = :nameId");
         $statement->bindValue(':nameId', $nameId);
         $statement->execute();
 
-        $result = $statement->fetch(PDO::FETCH_OBJ);
+        if ($statement->rowCount() != 0) {
+            $result = $statement->fetch(PDO::FETCH_OBJ);
+            return $this->createFile($result);
+        } else {
+            return null;
+        }
 
-        return $this->createFile($result);
+
     }
 
     public function getFileThroughId(int $id): File

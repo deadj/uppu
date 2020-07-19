@@ -4,8 +4,8 @@ class FileController
 {
 	private $view;
 	private $db;
-	private $filesTable;
-	private $commentsTable;
+	private FilesTable $filesTable;
+	private CommentsTable $commentsTable;
 
 	public function __construct(\Slim\Views\Twig $view, $db)
 	{
@@ -21,6 +21,11 @@ class FileController
 		$nameId = $args['nameId'];
 
 		$file = $this->filesTable->getFileThroughNameId($nameId);
+
+		if ($file === null) {
+			return $this->view->render($response, '404.html');
+		} 
+
 		$comments = $this->commentsTable->getListForFile($nameId);
 
 		return $this->view->render($response, 'file.phtml', [
@@ -39,7 +44,7 @@ class FileController
 		]);
 	}
 
-	public function addComment($request, $response, $args)
+	public function addComment($request, $response)
 	{
 		$data = $request->getParsedBody();
 
@@ -63,7 +68,7 @@ class FileController
 		return $response->getBody()->write($result);
 	}
 
-	public function getCommentsList($request, $response, $args)
+	public function getCommentsList($request, $response)
 	{
 		$data = $request->getParsedBody();
 		$fileId = $data['fileId'];

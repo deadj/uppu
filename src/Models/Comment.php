@@ -2,12 +2,11 @@
 
 class Comment
 {
-	private $id;
-	private $fileId;
-	private $text;
-	private $date;
-	private $parentId;
-	private $childrenComments;
+	private int $id;
+	private string $fileId;
+	private string $text;
+	private string $date;
+	private ?int $parentId;
 
 	public function __construct(
 		int $id,

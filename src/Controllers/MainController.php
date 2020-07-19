@@ -5,11 +5,11 @@ use Slim\Http\UploadedFile;
 class MainController
 {
     private $view;
-    private $fileDirectory = 'files/';
-    private $filesTable;
     private $db;
-    private $sphinxSearch;
-    private $getID3;
+    private string $fileDirectory = 'files/';
+    private FilesTable $filesTable;
+    private SphinxSearch $sphinxSearch;
+    private getID3 $getID3;
 
     public function __construct(\Slim\Views\Twig $view, $db)
     {
@@ -20,12 +20,12 @@ class MainController
         $this->getID3 = new getID3;
     }
 
-    public function printPage($request, $response, $args)
+    public function printPage($request, $response)
     {
         return $this->view->render($response, 'main.phtml');
     }
 
-    public function uploadFile($request, $response, $args)
+    public function uploadFile($request, $response)
     {
         $data = $request->getParsedBody();
         $uploadedFiles = $request->getUploadedFiles();

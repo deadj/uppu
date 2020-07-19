@@ -4,8 +4,8 @@ class SearchController
 {
 	private $view;
 	private $db;
-	private $sphinxSearch;
-	private $filesTable;
+	private SphinxSearch $sphinxSearch;
+	private FilesTable $filesTable;
 
 	public function __construct(\Slim\Views\Twig $view, $db)
 	{
@@ -15,7 +15,7 @@ class SearchController
 		$this->filesTable = new FilesTable($db);
 	}
 
-	public function search($request, $response, $args)
+	public function search($request, $response)
 	{
 		if ($request->getParam('text') == "") {
 			return $this->view->render($response, 'main.phtml');

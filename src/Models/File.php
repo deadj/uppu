@@ -2,15 +2,15 @@
 
 class File 
 {
-    private $name;
-    private $nameId;
-    private $link;
-    private $comment;
-    private $type;
-    private $date;
-    private $size;
-    private $metadata;
-    private $uploadIsDone;
+    private string $name;
+    private string $nameId;
+    private string $link;
+    private string $comment;
+    private string $type;
+    private string $date;
+    private float $size;
+    private array $metadata;
+    private string $uploadIsDone;
 
     public function __construct(
         string $nameId, 

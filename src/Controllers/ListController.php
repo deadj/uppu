@@ -4,7 +4,7 @@ class ListController
 {
 	private $view;
 	private $db;	
-	private $filesTable;
+	private FilesTable $filesTable;
 
 	public function __construct(\Slim\Views\Twig $view, $db)
 	{
@@ -13,7 +13,7 @@ class ListController
 		$this->filesTable = new FilesTable($db);
 	}
 
-	public function printPage($request, $response, $args)
+	public function printPage($request, $response)
 	{
 		$filesList = $this->filesTable->getFilesList();
 

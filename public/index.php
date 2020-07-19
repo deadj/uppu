@@ -23,6 +23,12 @@ $container['db'] = function($c){
     return $pdo;
 };
 
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        return $c->view->render($response, '404.html');
+    };
+};
+
 $container['MainController'] = function($c) {
     $view = $c->get("view");
     $db = $c->get("db");
@@ -51,6 +57,7 @@ $container['Helper'] = function($c){
     $db = $c->get("db");
     return new Helper($db);
 };
+
 
 $app->get('/', \MainController::class . ':printPage');
 $app->get('/search', \SearchController::class . ':search');
