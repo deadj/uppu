@@ -52,7 +52,7 @@
 	margin-left: 25px;
 }
 
-.comment a {
+.comment a, label p {
 	display: block;
 	text-align: right;
 	margin-bottom: 10px;
@@ -122,7 +122,7 @@ button {
 	padding: 10px;
 }
 
-.replyToCommentBlock button {
+.replyToCommentBlock button, .comment form button {
 	width: 100px;
 	padding: 5px 10px;
 	margin: 0px;
@@ -137,10 +137,34 @@ button {
 }
 
 .replyCommentField {
-	width: calc(100% - 110px);
+	width: calc(100% - 130px);
+	padding: 10px;
 	resize: none;
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
 	border: none;
-	height: 45px;
+	height: 30px;
 	vertical-align: top;
 }
+
+.replyComment, .closeReplyButton {
+	display: none;
+}
+
+
+label .replyRadio {
+	display: none;
+}
+
+.replyRadio:checked ~ .replyComment {
+	display: block;
+}
+
+.replyRadio:checked ~ .openReplyButton {
+	display: none;
+}
+
+.replyRadio:checked ~ .closeReplyButton {
+	display: block;
+}
+
+

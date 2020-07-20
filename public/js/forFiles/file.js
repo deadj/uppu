@@ -1,5 +1,28 @@
+changeReplyBlock();
 setInterval(updateComments, 30000);
 setInterval(reloadPage, 10000);
+
+
+function reloadPage(){
+    var uploadStatus = document.getElementById('uploadStatus').value;
+
+    if (uploadStatus != "done") {
+        window.location.reload();
+    }
+}
+
+function changeReplyBlock(){
+    var replyBlocks = document.querySelectorAll('.replyBlock');
+
+    for (var i = 0; i < replyBlocks.length; i++) {
+        var replyButton = document.createElement('a');
+        replyButton.name = "replyButton";
+        replyButton.setAttribute("onclick", "printReplyToComment(this)");
+        replyButton.innerHTML = "Ответить";
+
+        replyBlocks[i].parentNode.querySelector('label').replaceWith(replyButton);
+    }
+}
 
 newCommentBlock.onsubmit = async function(e){
     e.preventDefault();
@@ -7,21 +30,29 @@ newCommentBlock.onsubmit = async function(e){
     addCommentButton.disabled = true;
     addCommentButton.innerHTML = "<img src='/img/ajax-loader.gif'>";
 
-    var url = '/addComment';
-
     var formData = new FormData(newCommentBlock);
-    formData.append('fileId', fileId.value);
-    formData.append('parentId', 'NULL');
+    formData.delete('notjs');
 
     addComment(formData);
 }
 
-function reloadPage(){
-    var uploadStatus = document.getElementById('uploadStatus');
+async function replyComment(e) {
+    e.disabled = true;
+    e.innerHTML = "<img src='/img/ajax-loader.gif'>";
 
-    if (uploadStatus != "done") {
-        window.location.reload();
-    }
+    var replyBlock = e.parentNode.parentNode;
+    var comment = replyBlock.querySelector("div .replyCommentField").value;
+    var parentId = replyBlock.querySelector("input[name='commentId']").value;
+
+    var url = '/addComment';
+
+    var formData = new FormData();
+
+    formData.append('comment', comment);
+    formData.append('fileId', fileId.value);
+    formData.append('parentId', parentId);
+
+    addComment(formData);
 }
 
 async function addComment(formData){
@@ -152,24 +183,21 @@ function createReplyBlock(comment){
 
     var replyButton = comment.parentNode.querySelector('a').innerHTML = "Закрыть";
 
-    comment.parentNode.appendChild(newCommentBlock);      
+    comment.parentNode.querySelector('a').after(newCommentBlock);     
 }
 
-async function replyComment(e) {
-    e.disabled = true;
-    e.innerHTML = "<img src='/img/ajax-loader.gif'>";
+function closeReply(el) {
+    var label = el.parentNode;
 
-    var replyBlock = e.parentNode.parentNode;
-    var comment = replyBlock.querySelector("div .replyCommentField").value;
-    var parentId = replyBlock.querySelector("input[name='commentId']").value;
+    label.querySelector('.replyComment').style.display = "none";
+    label.querySelector('.closeReplyButton').style.display = "none";
+    label.querySelector('.openReplyButton').style.display = "block";
+}
 
-    var url = '/addComment';
+function openReply(el) {
+    var label = el.parentNode;
 
-    var formData = new FormData();
-
-    formData.append('comment', comment);
-    formData.append('fileId', fileId.value);
-    formData.append('parentId', parentId);
-
-    addComment(formData);
+    label.querySelector('.replyComment').style.display = "block";
+    label.querySelector('.closeReplyButton').style.display = "block";
+    label.querySelector('.openReplyButton').style.display = "none";
 }

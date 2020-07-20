@@ -10,7 +10,7 @@
 </head>
 <body>
     {% include 'DuplicateItems/header.phtml' %}
-    <input type="hidden" id="uploadStatus" value=" {{ uploadIsDone }}">
+    <input type="hidden" id="uploadStatus" value="{{ filesData.uploadIsDone }}">
     <input type="hidden" id="fileId" value="{{ filesData.nameId }}">
     <div>
         <div class="fileBlock">
@@ -43,18 +43,20 @@
             {% endif %}
         </div>
     </div>
-        {% if comments|length > 0 %}
-            <div class="commentsBlock" id="commentsBlock">
-                {{ _self.printComments(comments) }}
-            </div>
-        {% else %}
-            <div class="commentsBlock" id="commentsBlock">
-                <p>Ваш комментарий будет первым</p>
-            </div>
-        {% endif %}
-
-    <form class="newCommentBlock" id="newCommentBlock">
-        <textarea name="comment" id="newCommentsText"></textarea>
+    {% if comments|length > 0 %}
+        <div class="commentsBlock" id="commentsBlock">
+            {{ _self.printComments(comments, filesData.nameId) }}
+        </div>
+    {% else %}
+        <div class="commentsBlock" id="commentsBlock">
+            <p>Ваш комментарий будет первым</p>
+        </div>
+    {% endif %}
+    <form method="post" action="/addComment" class="newCommentBlock" id="newCommentBlock">
+        <input type="hidden" name="fileId" value="{{ filesData.nameId }}">
+        <input type="hidden" name="parentId" value="NULL">
+        <input type="hidden" name="notjs">
+        <textarea name="comment" id="newCommentsText" required></textarea>
         <button id="addCommentButton">Отправить</button>
     </form>
     <script type="text/x-template" id="templateReplyComment">
@@ -70,15 +72,26 @@
 </body>
 </html>
 
-{% macro printComments(comments) %}
+{% macro printComments(comments, fileId) %}
     {% for comment in comments %}
         <div class="comment">
             <input type="hidden" name="commentId" value="{{ comment.id }}">
             <h5>{{ comment.date }}</h6>
             <p>{{ comment.text|nl2br }}</p>
-            <a name="replyButton" onclick="printReplyToComment(this)">Ответить</a>
+            <label class="replyBlock">
+                <input type="radio" name="radio" class="replyRadio">
+                <p class="openReplyButton" onclick="openReply(this)">Ответить</p>
+                <p class="closeReplyButton" onclick="closeReply(this)">Закрыть</p>
+                <form method="post" action="/addComment" class="replyComment">
+                    <input type="hidden" name="fileId" value="{{ fileId }}">
+                    <input type="hidden" name="parentId" value="{{ comment.id }}">
+                    <input type="hidden" name="notjs">
+                    <textarea class="replyCommentField" name="comment"></textarea>
+                    <button>Отправить</button>
+                </form>
+            </label>
             {% if comment.children|length > 0 %}
-                {{ _self.printComments(comment.children) }}
+                {{ _self.printComments(comment.children, fileId) }}
             {% endif %}
         </div>
     {% endfor %}

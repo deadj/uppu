@@ -65,7 +65,12 @@ class FileController
 			$result = false;
 		}
 
-		return $response->getBody()->write($result);
+        if (isset($data['notjs'])) {
+            header("Location: http://localhost/file/" . $fileId);
+            exit;
+        } else {
+            return $response->getBody()->write($result);
+        }
 	}
 
 	public function getCommentsList($request, $response)
