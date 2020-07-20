@@ -2,7 +2,6 @@ changeReplyBlock();
 setInterval(updateComments, 30000);
 setInterval(reloadPage, 10000);
 
-
 function reloadPage(){
     var uploadStatus = document.getElementById('uploadStatus').value;
 
@@ -15,6 +14,7 @@ function changeReplyBlock(){
     var replyBlocks = document.querySelectorAll('.replyBlock');
 
     for (var i = 0; i < replyBlocks.length; i++) {
+        console.log('test');
         var replyButton = document.createElement('a');
         replyButton.name = "replyButton";
         replyButton.setAttribute("onclick", "printReplyToComment(this)");
@@ -186,18 +186,18 @@ function createReplyBlock(comment){
     comment.parentNode.querySelector('a').after(newCommentBlock);     
 }
 
-function closeReply(el) {
-    var label = el.parentNode;
+// function closeReply(el) {
+//     var label = el.parentNode;
 
-    label.querySelector('.replyComment').style.display = "none";
-    label.querySelector('.closeReplyButton').style.display = "none";
-    label.querySelector('.openReplyButton').style.display = "block";
-}
+//     label.querySelector('.replyComment').style.display = "none";
+//     label.querySelector('.closeReplyButton').style.display = "none";
+//     label.querySelector('.openReplyButton').style.display = "block";
+// }
 
-function openReply(el) {
-    var label = el.parentNode;
+// function openReply(el) {
+//     var label = el.parentNode;
 
-    label.querySelector('.replyComment').style.display = "block";
-    label.querySelector('.closeReplyButton').style.display = "block";
-    label.querySelector('.openReplyButton').style.display = "none";
-}
+//     label.querySelector('.replyComment').style.display = "block";
+//     label.querySelector('.closeReplyButton').style.display = "block";
+//     label.querySelector('.openReplyButton').style.display = "none";
+// }

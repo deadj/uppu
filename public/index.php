@@ -59,11 +59,10 @@ $container['Helper'] = function($c){
     return new Helper($db);
 };
 
-
 $app->get('/', \MainController::class . ':printPage');
 $app->get('/search', \SearchController::class . ':search');
 $app->get('/list', \ListController::class . ':printPage');
-$app->get('/file/{nameId}', \FileController::class . ':printPage');
+$app->get('/file/{nameId}[/{notify}]', \FileController::class . ':printPage');
 $app->get('/deleteErrorFiles', \Helper::class . ':deleteErrorFiles');
 $app->post('/addComment', \FileController::class . ':addComment');
 $app->post('/getCommentsList', \FileController::class . ":getCommentsList");

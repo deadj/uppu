@@ -28,7 +28,7 @@ class FileController
 
 		$comments = $this->commentsTable->getListForFile($nameId);
 
-		return $this->view->render($response, 'file.phtml', [
+		$dataForView = array(
 			'filesData' => array(
 				'nameId' => $file->getNameId(),
 				'name' => $file->getName(),
@@ -41,7 +41,13 @@ class FileController
 				'uploadIsDone' => $file->getUploadIsDone()
 			),
 			'comments' => $this->createCommentsTree($comments)
-		]);
+		);
+
+		if (isset($args['notify']) && $args['notify'] == "emptyComment") {
+			$dataForView['notify'] = "emptyComment";
+		}
+
+		return $this->view->render($response, 'file.phtml', $dataForView);
 	}
 
 	public function addComment($request, $response)
@@ -66,8 +72,11 @@ class FileController
 		}
 
         if (isset($data['notjs'])) {
-            header("Location: http://localhost/file/" . $fileId);
-            exit;
+        	if ($result) {
+            	return $response->withRedirect("http://localhost/file/" . $fileId);
+        	} else {
+        		return $response->withRedirect("http://localhost/file/" . $fileId . "/emptyComment");
+        	}
         } else {
             return $response->getBody()->write($result);
         }
@@ -167,5 +176,4 @@ class FileController
 			}
 		}
 	}
-
 }

@@ -10,6 +10,11 @@
 </head>
 <body>
     {% include 'DuplicateItems/header.phtml' %}
+    {% if notify is defined %}
+        <div class="emptyCommentNotify">
+            В комментарии должно быть что-то написано
+        </div>
+    {% endif%}
     <input type="hidden" id="uploadStatus" value="{{ filesData.uploadIsDone }}">
     <input type="hidden" id="fileId" value="{{ filesData.nameId }}">
     <div>
@@ -52,6 +57,7 @@
             <p>Ваш комментарий будет первым</p>
         </div>
     {% endif %}
+
     <form method="post" action="/addComment" class="newCommentBlock" id="newCommentBlock">
         <input type="hidden" name="fileId" value="{{ filesData.nameId }}">
         <input type="hidden" name="parentId" value="NULL">
@@ -86,7 +92,7 @@
                     <input type="hidden" name="fileId" value="{{ fileId }}">
                     <input type="hidden" name="parentId" value="{{ comment.id }}">
                     <input type="hidden" name="notjs">
-                    <textarea class="replyCommentField" name="comment"></textarea>
+                    <textarea class="replyCommentField" name="comment" required></textarea>
                     <button>Отправить</button>
                 </form>
             </label>

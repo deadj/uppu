@@ -27,7 +27,7 @@
 }
 
 .newCommentBlock {
-	text-align: left;
+	/*text-align: left;*/
 }
 
 .uploadButton {
@@ -108,12 +108,20 @@ button {
 	margin-left: auto;
 }
 
-.commentPopup {
+.commentPopup, .emptyCommentNotify {
 	position: fixed;
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
 	background-color: white;
 	padding: 20px;
+	display: block;
 }
+
+.emptyCommentNotify {
+	width: 200px;
+	bottom: 20px;
+	right: 20px;
+}
+
 
 .replyToCommentBlock input {
 	display: inline-block;
@@ -150,7 +158,6 @@ button {
 	display: none;
 }
 
-
 label .replyRadio {
 	display: none;
 }
@@ -166,5 +173,3 @@ label .replyRadio {
 .replyRadio:checked ~ .closeReplyButton {
 	display: block;
 }
-
-

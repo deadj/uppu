@@ -84,8 +84,7 @@ class MainController
             $this->sphinxSearch->add($fileId, $file);
 
             if (isset($data['notjs'])) {
-                header("Location: http://localhost/file/" . $nameId);
-                exit;
+                return $response->withRedirect("http://localhost/file/" . $nameId);
             } else {
                 return $response->getBody()->write($nameId);
             }
