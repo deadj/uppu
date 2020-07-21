@@ -5,13 +5,16 @@
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
 }
 
-.fileInfo {
+.dataNames, .dataValues {
 	display: inline-block;
 	text-align: left;
-	vertical-align: top;
 	list-style-type: none;
 	margin: 0px;
-	margin-left: -20px;
+	padding: 0px;
+}
+.dataNames {
+	opacity: 0.5;
+	margin-right: 20px;
 }
 
 .fileBlock, .commentsBlock, .newCommentBlock {
@@ -20,14 +23,33 @@
 	padding: 20px;
 	margin-bottom: 40px;
 	width: 50%;
+
+}
+
+/*.fileBlock video, .fileBlock audio {
+	float: left;
+	vertical-align: bottom;
+}*/
+
+.fileInfo {
+	vertical-align: top;
+}
+
+.content, .fileInfo {
+	display: inline-block;
+	width: 49%;
+}
+
+.content {
+	text-align: left;
+}
+
+.content video, .content audio {
+	width: 100%;
 }
 
 .commentsBlock, .newCommentBlock  {
 	width: 50%;
-}
-
-.newCommentBlock {
-	/*text-align: left;*/
 }
 
 .uploadButton {
@@ -173,3 +195,23 @@ label .replyRadio {
 .replyRadio:checked ~ .closeReplyButton {
 	display: block;
 }
+
+@media (max-width: 1200px) {
+	.fileBlock, .commentsBlock, .newCommentBlock {
+		width: 80%;
+	}
+}
+
+@media (max-width: 650px) {
+	.content, .fileInfo {
+		display: block;
+		width: 100%;
+	}
+
+	.fileInfo {
+		margin-top: 20px;
+		text-align: left;
+	}
+}
+
+

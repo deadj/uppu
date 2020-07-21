@@ -24,3 +24,7 @@ td:last-child {
 	background-color: rgb(240,240,240); 
 }
 
+td a {
+	color: black;
+}
+

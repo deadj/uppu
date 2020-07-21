@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Uppu</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/file.css">
@@ -20,26 +21,43 @@
     <div>
         <div class="fileBlock">
             {% if filesData.uploadIsDone == "done" %}
-                {% if filesData.type == "video" %}
-                    <video src="/{{ filesData.link }}" width="350" controls></video>
-                {% elseif filesData.type == "audio" %}
-                    <audio src="/{{ filesData.link }}" controls></audio>
-                {% elseif filesData.type == "image" %}
-                    <img id="imgFile" src="/{{ filesData.link }}" width="350">
-                {% endif %}
-                <ul class="fileInfo">
-                    <li>Название: {{ filesData.name }}</li>
-                    {% if size <= 1000 %}
-                        <li>Размер: {{ filesData.size }} Кб.</li>
-                    {% else %}
-                        <li>Размер: {{ filesData.size / 1000}} Мб.</li>
+                <div class="content">
+                    {% if filesData.type == "video" %}
+                        <video src="/{{ filesData.link }}" controls></video>
+                    {% elseif filesData.type == "audio" %}
+                        <audio src="/{{ filesData.link }}" controls></audio>
+                    {% elseif filesData.type == "image" %}
+                        <img id="imgFile" src="/{{ filesData.link }}" width="350">
                     {% endif %}
-                    <li>Дата загрузки: {{ filesData.date }}</li>
-                    <li>Комментарий: {{ filesData.comment }}</li>
-                    {% for data in filesData.metadata %}
-                        <li>{{ data.dataName }}: {{ data.value }}</li>
-                    {% endfor %}
-                </ul>
+                </div>
+                <div class="fileInfo">
+                    <ul class="dataNames">
+                        <li>Название</li>
+                        <li>Размер</li>
+                        <li>Дата загрузки</li>
+                        <li>Комментарий</li>
+                        {% for data in filesData.metadata %}
+                            <li>{{ data.dataName }}</li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="dataValues">
+                        <li>{{ filesData.name }}</li>
+                        {% if size <= 1000 %}
+                            <li>{{ filesData.size }} Кб.</li>
+                        {% else %}
+                            <li>{{ filesData.size / 1000}} Мб.</li>
+                        {% endif %}
+                        <li>{{ filesData.date }}</li>
+                        {% if filesData.comment is empty%}
+                            <li>-</li>
+                        {% else %}
+                            <h1>filesData.comment</h1>
+                        {% endif %}
+                        {% for data in filesData.metadata %}
+                            <li>{{ data.value }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
                 <a class="uploadButton" href="/{{ filesData.link }}" download="">Скачать</a>
             {% elseif filesData.uploadIsDone == "error" %}
                 <p>Извините, файл загружен с ошибкой. Страница скоро будет удалена. Попробуйте загрузить снова.</p>

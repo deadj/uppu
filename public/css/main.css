@@ -74,7 +74,6 @@ input[type="text"]:not(.replyCommentField) {
 	width: 300px;
 	height: 10px;
 	padding: 20px;
-	/*cursor: pointer;*/
 }
 
 input[type="file"] {
@@ -85,7 +84,6 @@ input[type="file"] {
 
 .searchBlock {
 	display: inline-block;
-	/*float: right;*/
 	margin-top: -5px;
 }
 
@@ -111,3 +109,30 @@ input[type="file"] {
 	display: none;
 }
 
+@media (max-width: 900px) {
+	header {
+		padding: 10px;
+	}
+
+	header h1 {
+		margin-top: 0px;
+	}
+
+	header h1, header form, header a, header > a > h3, header .searchBlock {
+		display: block;
+		float: none;
+		text-align: center;
+		width: auto;
+		margin-bottom: 25px;
+	}
+
+	.searchBlock {
+		margin: 0px;
+	}
+}
+
+@media (max-width: 450px) {
+	.searchBlock input[type="text"] {
+		width: calc(100% - 120px);
+	}
+}
