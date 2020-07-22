@@ -26,11 +26,6 @@
 
 }
 
-/*.fileBlock video, .fileBlock audio {
-	float: left;
-	vertical-align: bottom;
-}*/
-
 .fileInfo {
 	vertical-align: top;
 }
@@ -101,11 +96,12 @@
 .newCommentBlock textarea {
 	display: block;
 	padding: 10px;
-	width: 97%;
+	width: calc(100% - 20px);
 	height: 80px;
 	resize: none;
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
 	border: none;
+	margin-right: 20px;
 }
 
 .newCommentBlock input {
@@ -130,18 +126,12 @@ button {
 	margin-left: auto;
 }
 
-.commentPopup, .emptyCommentNotify {
+.commentPopup {
 	position: fixed;
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
 	background-color: white;
 	padding: 20px;
 	display: block;
-}
-
-.emptyCommentNotify {
-	width: 200px;
-	bottom: 20px;
-	right: 20px;
 }
 
 

@@ -20,14 +20,25 @@ class MainController
         $this->getID3 = new getID3;
     }
 
-    public function printPage($request, $response)
+    public function printPage($request, $response, $args)
     {
-        return $this->view->render($response, 'main.phtml');
+        $dataForView = array();
+
+        if (isset($args['notify']) && $args['notify'] == "emptyName") {
+            $dataForView['notify'] = "emptyName";
+        }
+
+        return $this->view->render($response, 'main.phtml', $dataForView);
     }
 
     public function uploadFile($request, $response)
     {
         $data = $request->getParsedBody();
+
+        if ($data['name'] == "") {
+            return $response->withRedirect("http://localhost/notify=emptyName");
+        }
+
         $uploadedFiles = $request->getUploadedFiles();
         $uploadedFile = $uploadedFiles['file'];
 
@@ -89,7 +100,7 @@ class MainController
                 return $response->getBody()->write($nameId);
             }
         }  else {
-            echo "Error";
+            return $response->getBody()->write("error");
         }
     }
 

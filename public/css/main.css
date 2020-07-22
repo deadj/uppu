@@ -2,6 +2,7 @@ html, body {
 	padding: 0px;
 	margin: 0px;
 	text-align: center;
+	font-family: 'PT Sans', sans-serif;
 }
 
 header {
@@ -107,6 +108,17 @@ input[type="file"] {
 
 .uploadButton {
 	display: none;
+}
+
+.notify {
+	position: fixed;
+	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
+	background-color: white;
+	padding: 20px;
+	display: block;
+	width: 200px;
+	bottom: 20px;
+	right: 20px;
 }
 
 @media (max-width: 900px) {

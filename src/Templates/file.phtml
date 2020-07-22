@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
     <title>Uppu</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/file.css">
@@ -11,8 +12,8 @@
 </head>
 <body>
     {% include 'DuplicateItems/header.phtml' %}
-    {% if notify is defined %}
-        <div class="emptyCommentNotify">
+    {% if notify is defined and notify == "emptyComment" %}
+        <div class="notify">
             В комментарии должно быть что-то написано
         </div>
     {% endif%}

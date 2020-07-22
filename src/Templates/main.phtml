@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
     <title>Uppu</title>
     <link rel="stylesheet" href="css/main.css">
     <link href="/js/dropzone/dist/dropzone.css" type="text/css" rel="stylesheet" />
@@ -12,8 +13,13 @@
 </head>
 <body>
     {% include 'DuplicateItems/header.phtml' %}
+    {% if notify is defined and notify == "emptyName" %}
+        <div class="notify">
+            Название должно быть заполнено
+        </div>        
+    {% endif %}
     <form action="/" method="POST" enctype="multipart/form-data" id="myForm" class="uploadForm">
-        <input type="text" name="name" id="name" placeholder="Название (не более 30 символов)" maxlength="30" required>
+        <input type="text" name="name" id="name" placeholder="Название (не более 30 символов)" maxlength="30">
         <input type="text" name="comment" placeholder="Комментарий (не более 50 символов)" maxlength="50">
         <div class="dropzone" id="myDropzone" name="mainFileUploader">
             <div class="fallback">
