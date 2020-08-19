@@ -1,7 +1,7 @@
 source base
 {
     type            = mysql
-    sql_host        = localhost
+    sql_host        = 
     sql_user        = 
     sql_pass        = 
     sql_db          = 
@@ -20,7 +20,7 @@ source src_files: base
 index index_files
 {
     source = src_files
-    path == /PATH/DATA
+    path = sphinx/data/files
     docinfo = extern
     charset_type = utf-8
 }
@@ -28,7 +28,7 @@ index index_files
 index rt_files
 {
     type = rt
-    path ==  /PATH/DATA
+    path =  sphinx/data
 
     rt_field = nameId
     rt_field = name
@@ -54,16 +54,16 @@ searchd
     listen = 9312
     listen  = 9306:mysql41
 
-    log ==  /PATH/LOG/searchd.log
-    query_log ==  LOG/query.log
+    log =  sphinx/log/searchd.log
+    query_log =  sphinx/log/query.log
 
     read_timeout = 5
     max_children = 30
-    pid_file ==  LOG/searchd.pid
+    pid_file =  sphinx/log/searchd.pid
     max_matches = 1000
     seamless_rotate = 1
     preopen_indexes = 1
     unlink_old = 1
     workers = threads # for RT to work
-    binlog_path ==  data
+    binlog_path =  sphinx/data/
 }

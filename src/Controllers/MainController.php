@@ -100,7 +100,7 @@ class MainController
                 return $response->getBody()->write($nameId);
             }
         }  else {
-            return $response->getBody()->write("error");
+            return $response->getBody()->write($uploadedFile->getError());
         }
     }
 

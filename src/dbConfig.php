@@ -10,7 +10,7 @@ $config['addContentLengthHeader'] = false;
 $config['db']['host']   = $dbInfo['host'];
 $config['db']['user']   = $dbInfo['user'];
 $config['db']['pass']   = $dbInfo['pass'];
-$config['db']['dbname'] = $dbInfo['dbname'];
+$config['db']['dbname'] = $dbInfo['db'];
 
 return $config;
 
