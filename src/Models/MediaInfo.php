@@ -8,7 +8,7 @@ class MediaInfo
 		$fileData = $getID3->analyze($link);
 		$data = array();
 
-		if ($type == "video") {
+		if ($type == File::TYPE_VIDEO) {
 			$data = array(
 				array(
 					"dataName" => "Ширина", 
@@ -24,7 +24,7 @@ class MediaInfo
 					"value" => $fileData['playtime_string']
 				)
 			);
-		} elseif ($type == "image") {
+		} elseif ($type == File::TYPE_IMAGE) {
 			$data = array(
 				array(
 					"dataName" => "Шинина", 
@@ -34,7 +34,7 @@ class MediaInfo
 					"value" => $fileData['video']['resolution_y']
 				)
 			);			
-		} elseif ($type == "audio") {
+		} elseif ($type == File::TYPE_AUDIO) {
 			$data = array(
 				array(
 					"dataName" => "Битрейт", 

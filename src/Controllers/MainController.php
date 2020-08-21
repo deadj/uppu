@@ -65,7 +65,7 @@ class MainController
             $type = $this->getFileType($uploadedFile->getClientMediaType());
             $link = $this->createFilesLink($folderPath, $nameId, $uploadedFile->getClientFilename());
 
-            if ($type == "video") {
+            if ($type == File::TYPE_VIDEO) {
                 $fileData = $this->getID3->analyze($link);
 
                 if (!isset($this->fileData['video']['fourcc_lookup']) || 
@@ -76,18 +76,18 @@ class MainController
 
                     $metadata = MediaInfo::getNullMetadataForVideo();
                     $size = 0;
-                    $uploadIsDone = "null";
+                    $uploadIsDone = File::STATUS_NULL;
                 } else {
                     $metadata = MediaInfo::getMetadata($type, $link);
                     $size = MediaInfo::getSize($link);
-                    $uploadIsDone = "done";
+                    $uploadIsDone = File::STATUS_DONE;
                 }
 
                 $link = preg_replace('/[.]\\w*/', '.mp4', $link);
             } else {
                 $metadata = MediaInfo::getMetadata($type, $link);
                 $size = MediaInfo::getSize($link);
-                $uploadIsDone = "done";
+                $uploadIsDone = File::STATUS_DONE;
             }
             
             if ($extension == "php" || $extension == "phtml") {
@@ -124,13 +124,13 @@ class MainController
     private function getFileType(string $type): string
     {
         if (preg_match('/video/', $type)) {
-            return "video";
+            return File::TYPE_VIDEO;
         } elseif (preg_match('/image/', $type)) {
-            return "image";
+            return File::TYPE_IMAGE;
         } elseif (preg_match('/audio/', $type)) {
-            return "audio";
+            return File::TYPE_AUDIO;
         } else {
-            return "other";
+            return File::TYPE_OTHER;
         }   
     }
 }

@@ -13,7 +13,7 @@
             Название должно быть заполнено
         </div>        
     {% endif %}
-    <form action="/" method="POST" enctype="multipart/form-data" id="myForm" class="uploadForm">
+<!--     <form action="/" method="POST" enctype="multipart/form-data" id="myForm" class="uploadForm">
         <input type="text" name="name" id="name" placeholder="Название (не более 30 символов)" maxlength="30">
         <input type="text" name="comment" placeholder="Комментарий (не более 50 символов)" maxlength="50">
         <div class="dropzone" id="myDropzone" name="mainFileUploader">
@@ -25,6 +25,13 @@
         </div>
         <input class="deleteButton" type="submit" value="Удалить файл" id="deleteButton">
         <button class="uploadButton" id="uploadButton">Загрузить</button>
+    </form> -->
+    <!-- <script src="js/forFiles/main.js"></script> -->
+
+    <form class="uploadForm" enctype="multipart/form-data" action="/" method="POST">
+        <input type="text" name="name">
+        <input type="text" name="comment">
+        <input type="file" name="file">
+        <input type="submit">
     </form>
-    <script src="js/forFiles/main.js"></script>
 {% endblock %}

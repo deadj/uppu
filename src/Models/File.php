@@ -2,6 +2,15 @@
 
 class File 
 {
+    const STATUS_DONE = "done";
+    const STATUS_NULL = "null";
+    const STATUS_ERROR = "error";
+
+    const TYPE_VIDEO = "video";
+    const TYPE_AUDIO = "audio";
+    const TYPE_IMAGE = "image";
+    const TYPE_OTHER = "other";
+    
     private ?int $id;
     private string $name;
     private string $nameId;

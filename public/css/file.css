@@ -5,16 +5,20 @@
 	box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.5);
 }
 
-.dataNames, .dataValues {
+.fileData {
+	width: 49%;
 	display: inline-block;
-	text-align: left;
-	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
+	vertical-align: top;
+	float: right;
 }
-.dataNames {
+
+.fileData tr td {
+	text-align: left;
+}
+
+.fileData tr td:first-child {
 	opacity: 0.5;
-	margin-right: 20px;
+	padding-right: 20px;
 }
 
 .fileBlock, .commentsBlock, .newCommentBlock {
@@ -26,21 +30,20 @@
 
 }
 
-.fileInfo {
-	vertical-align: top;
-}
-
-.content, .fileInfo {
-	display: inline-block;
-	width: 49%;
-}
-
 .content {
 	text-align: left;
+	display: inline-block;
+	width: 49%;
+
 }
 
 .content video, .content audio {
 	width: 100%;
+}
+
+.content img {
+	width: 100%;
+	max-width: 350px;
 }
 
 .commentsBlock, .newCommentBlock  {
@@ -121,7 +124,6 @@ button {
 	margin: 0px;
 	padding: 5px 30px;
 	margin-top: 10px;
-	/*float: right;*/
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -192,15 +194,19 @@ label .replyRadio {
 	}
 }
 
-@media (max-width: 650px) {
-	.content, .fileInfo {
+@media (max-width: 710px) {
+	.content, .fileData {
 		display: block;
 		width: 100%;
+		float: none;
 	}
 
-	.fileInfo {
+	.fileData {
 		margin-top: 20px;
-		text-align: left;
+	}
+
+	.content img {
+		max-width: none;
 	}
 }
 

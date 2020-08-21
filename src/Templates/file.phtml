@@ -23,37 +23,45 @@
                     {% elseif file.type == "audio" %}
                         <audio src="/{{ file.getLink() }}" controls></audio>
                     {% elseif file.type == "image" %}
-                        <img id="imgFile" src="/{{ file.getLink() }}" width="350">
+                        <img id="imgFile" src="/{{ file.getLink() }}">
                     {% endif %}
                 </div>
-                <div class="fileInfo">
-                    <ul class="dataNames">
-                        <li>Название</li>
-                        <li>Размер</li>
-                        <li>Дата загрузки</li>
-                        <li>Комментарий</li>
-                        {% for data in file.getMetadata() %}
-                            <li>{{ data.dataName }}</li>
-                        {% endfor %}
-                    </ul>
-                    <ul class="dataValues">
-                        <li>{{ file.getName() }}</li>
-                        {% if size <= 1000 %}
-                            <li>{{ file.getSize() }} Кб.</li>
-                        {% else %}
-                            <li>{{ file.getSize() / 1000}} Мб.</li>
-                        {% endif %}
-                        <li>{{ file.getDate() }}</li>
-                        {% if file.getComment is empty%}
-                            <li>-</li>
-                        {% else %}
-                            <li>{{ file.getComment() }}</li>
-                        {% endif %}
-                        {% for data in file.getMetadata() %}
-                            <li>{{ data.value }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                <table class="fileData">
+                    <tr>
+                        <td>Название</td>
+                        <td>{{ file.getName() }}</td>
+                    </tr>
+                    <tr>
+                        <td>Размер</td>
+                        <td>
+                            {% if size <= 1000 %}
+                                {{ file.getSize() }} Кб.
+                            {% else %}
+                                {{ file.getSize() / 1000}} Мб.
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Дата загрузки</td>
+                        <td>{{ file.getDate() }}</td>
+                    </tr>
+                    <tr>
+                        <td>Комментарий</td>
+                        <td>
+                            {% if file.getComment is empty%}
+                                -
+                            {% else %}
+                                {{ file.getComment() }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% for data in file.getMetadata() %}
+                        <tr>
+                            <td>{{ data.dataName }}</td>
+                            <td>{{ data.value }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
                 <a class="uploadButton" href="/{{ file.getLink() }}" download="">Скачать</a>
             {% elseif file.getUploadIsDone() == "error" %}
                 <p>Извините, файл загружен с ошибкой. Страница скоро будет удалена. Попробуйте загрузить снова.</p>
@@ -90,3 +98,18 @@
     </script>
     <script src="/js/forFiles/file.js"></script>
 {% endblock %}
+
+{% macro printComments(comments) %}
+    {% set indent = 0 %}
+    {% for comment in comments %}
+        <div style="margin-left: 25px"class="comment">
+            <input type="hidden" name="commentId" value="{{ comment.id }}">
+            <h5>{{ comment.date }}</h6>
+            <p>{{ comment.text }}</p>
+            <a name="replyButton" onclick="printReplyToComment(this)">Ответить</a>
+            {% if comment.children|length > 0 %}
+                {{ _self.printComments(comment.children) }}
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endmacro %} 
