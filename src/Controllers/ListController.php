@@ -6,11 +6,11 @@ class ListController
 	private $db;	
 	private FilesTable $filesTable;
 
-	public function __construct(\Slim\Views\Twig $view, $db)
+	public function __construct(\Slim\Views\Twig $view, $db, FilesTable $filesTable)
 	{
 		$this->view = $view;
 		$this->db = $db;
-		$this->filesTable = new FilesTable($db);
+		$this->filesTable = $filesTable;
 	}
 
 	public function printPage($request, $response)

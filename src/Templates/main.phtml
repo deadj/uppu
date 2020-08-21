@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
-    <title>Uppu</title>
-    <link rel="stylesheet" href="css/main.css">
+{% extends "DuplicateItems/base.html" %}
+
+{% block head %}
+    {{ parent() }}
     <link href="/js/dropzone/dist/dropzone.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="/js/dropzone/dist/dropzone.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
-</head>
-<body>
-    {% include 'DuplicateItems/header.phtml' %}
+{% endblock %}
+
+{% block content%}
     {% if notify is defined and notify == "emptyName" %}
         <div class="notify">
             Название должно быть заполнено
@@ -32,5 +27,4 @@
         <button class="uploadButton" id="uploadButton">Загрузить</button>
     </form>
     <script src="js/forFiles/main.js"></script>
-</body> 
-</html>
+{% endblock %}

@@ -1,6 +1,6 @@
 <?php
 
-$dbInfo = parse_ini_file('init.ini');
+$dbInfo = parse_ini_file(__DIR__ . '/init.ini');
 
 $config = array();
 

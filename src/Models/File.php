@@ -2,6 +2,7 @@
 
 class File 
 {
+    private ?int $id;
     private string $name;
     private string $nameId;
     private string $link;
@@ -13,6 +14,7 @@ class File
     private string $uploadIsDone;
 
     public function __construct(
+        ?int $id,
         string $nameId, 
         string $name, 
         string $link, 
@@ -23,6 +25,7 @@ class File
         array $metadata,
         string $uploadIsDone
     ){
+        $this->id = $id;
         $this->nameId = $nameId;
         $this->name = $name;
         $this->link = $link;

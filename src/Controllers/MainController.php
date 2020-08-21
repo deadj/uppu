@@ -10,14 +10,24 @@ class MainController
     private FilesTable $filesTable;
     private SphinxSearch $sphinxSearch;
     private getID3 $getID3;
+    private GearmanCLient $gearmanClient;
+    private Helper $helper;
 
-    public function __construct(\Slim\Views\Twig $view, $db)
-    {
+    public function __construct(
+        \Slim\Views\Twig $view, 
+        $db, 
+        SphinxSearch $sphinxSearch, 
+        FilesTable $filesTable, 
+        GearmanCLient $gearmanClient,
+        Helper $helper
+    ){
         $this->view = $view;
         $this->db = $db;
-        $this->filesTable = new FilesTable($db);
-        $this->sphinxSearch = new SphinxSearch();
+        $this->sphinxSearch = $sphinxSearch;
+        $this->filesTable = $filesTable;
         $this->getID3 = new getID3;
+        $this->gearmanClient = $gearmanClient;
+        $this->helper = $helper;
     }
 
     public function printPage($request, $response, $args)
@@ -49,10 +59,8 @@ class MainController
             if (!file_exists($folderPath)) {
                 mkdir($folderPath);
             }
-
-            $helper = new Helper($this->db);
             
-            $nameId = $helper->moveUploadedFile($folderPath . "/", $uploadedFile, $extension);
+            $nameId = $this->helper->moveUploadedFile($folderPath . "/", $uploadedFile, $extension);
             $name = strval(trim($data['name']));
             $type = $this->getFileType($uploadedFile->getClientMediaType());
             $link = $this->createFilesLink($folderPath, $nameId, $uploadedFile->getClientFilename());
@@ -63,9 +71,8 @@ class MainController
                 if (!isset($this->fileData['video']['fourcc_lookup']) || 
                     !preg_match('/H[.]264/iu', $this->fileData['video']['fourcc_lookup'])) {
 
-                    $gearmanClient = new GearmanCLient();
-                    $gearmanClient->addServer();
-                    $res = $gearmanClient->doBackground('convertVideo', $link);
+                    $this->gearmanClient->addServer();
+                    $res = $this->gearmanClient->doBackground('convertVideo', $link);
 
                     $metadata = MediaInfo::getNullMetadataForVideo();
                     $size = 0;
@@ -90,7 +97,7 @@ class MainController
             $comment = trim(mb_substr(strval($data['comment']), 0, 30));
             $date = date("Y-m-d H:i:s");
             
-            $file = new File($nameId, $name, $link, $comment, $type, $date, $size, $metadata, $uploadIsDone);
+            $file = new File(NULL, $nameId, $name, $link, $comment, $type, $date, $size, $metadata, $uploadIsDone);
             $fileId = $this->filesTable->addFile($file);
             $this->sphinxSearch->add($fileId, $file);
 

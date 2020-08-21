@@ -21,8 +21,6 @@ class FilesTable
         } else {
             return null;
         }
-
-
     }
 
     public function getFileThroughId(int $id): File
@@ -158,6 +156,7 @@ class FilesTable
     private function createFile(object $row): File
     {
         $file = new File(
+            $row->id,
             $row->nameId,
             $row->name,
             $row->link,

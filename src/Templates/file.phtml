@@ -1,34 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
-    <title>Uppu</title>
-    <link rel="stylesheet" href="/css/main.css">
+{% extends "DuplicateItems/base.html" %}
+
+{% block head %}
+    {{ parent() }}
     <link rel="stylesheet" href="/css/file.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
-</head>
-<body>
-    {% include 'DuplicateItems/header.phtml' %}
+{% endblock %}
+
+{% block content %}
     {% if notify is defined and notify == "emptyComment" %}
         <div class="notify">
             В комментарии должно быть что-то написано
         </div>
     {% endif%}
-    <input type="hidden" id="uploadStatus" value="{{ filesData.uploadIsDone }}">
-    <input type="hidden" id="fileId" value="{{ filesData.nameId }}">
+    <input type="hidden" id="uploadStatus" value="{{ file.getUploadIsDone() }}">
+    <input type="hidden" id="fileId" value="{{ file.getId() }}">
     <div>
         <div class="fileBlock">
-            {% if filesData.uploadIsDone == "done" %}
+            {% if file.getUploadIsDone() == "done" %}
                 <div class="content">
-                    {% if filesData.type == "video" %}
-                        <video src="/{{ filesData.link }}" controls></video>
-                    {% elseif filesData.type == "audio" %}
-                        <audio src="/{{ filesData.link }}" controls></audio>
-                    {% elseif filesData.type == "image" %}
-                        <img id="imgFile" src="/{{ filesData.link }}" width="350">
+                    {% if file.type == "video" %}
+                        <video src="/{{ file.getLink() }}" controls></video>
+                    {% elseif file.type == "audio" %}
+                        <audio src="/{{ file.getLink() }}" controls></audio>
+                    {% elseif file.type == "image" %}
+                        <img id="imgFile" src="/{{ file.getLink() }}" width="350">
                     {% endif %}
                 </div>
                 <div class="fileInfo">
@@ -37,30 +32,30 @@
                         <li>Размер</li>
                         <li>Дата загрузки</li>
                         <li>Комментарий</li>
-                        {% for data in filesData.metadata %}
+                        {% for data in file.getMetadata() %}
                             <li>{{ data.dataName }}</li>
                         {% endfor %}
                     </ul>
                     <ul class="dataValues">
-                        <li>{{ filesData.name }}</li>
+                        <li>{{ file.getName() }}</li>
                         {% if size <= 1000 %}
-                            <li>{{ filesData.size }} Кб.</li>
+                            <li>{{ file.getSize() }} Кб.</li>
                         {% else %}
-                            <li>{{ filesData.size / 1000}} Мб.</li>
+                            <li>{{ file.getSize() / 1000}} Мб.</li>
                         {% endif %}
-                        <li>{{ filesData.date }}</li>
-                        {% if filesData.comment is empty%}
+                        <li>{{ file.getDate() }}</li>
+                        {% if file.getComment is empty%}
                             <li>-</li>
                         {% else %}
-                            <h1>filesData.comment</h1>
+                            <li>{{ file.getComment() }}</li>
                         {% endif %}
-                        {% for data in filesData.metadata %}
+                        {% for data in file.getMetadata() %}
                             <li>{{ data.value }}</li>
                         {% endfor %}
                     </ul>
                 </div>
-                <a class="uploadButton" href="/{{ filesData.link }}" download="">Скачать</a>
-            {% elseif filesData.uploadIsDone == "error" %}
+                <a class="uploadButton" href="/{{ file.getLink() }}" download="">Скачать</a>
+            {% elseif file.getUploadIsDone() == "error" %}
                 <p>Извините, файл загружен с ошибкой. Страница скоро будет удалена. Попробуйте загрузить снова.</p>
             {% else %}
                 <img src="/img/ajax-loader.gif"> Файл обрабатывается
@@ -69,7 +64,7 @@
     </div>
     {% if comments|length > 0 %}
         <div class="commentsBlock" id="commentsBlock">
-            {{ _self.printComments(comments, filesData.nameId) }}
+            {{ _self.printComments(comments, file.getId()) }}
         </div>
     {% else %}
         <div class="commentsBlock" id="commentsBlock">
@@ -78,7 +73,7 @@
     {% endif %}
 
     <form method="post" action="/addComment" class="newCommentBlock" id="newCommentBlock">
-        <input type="hidden" name="fileId" value="{{ filesData.nameId }}">
+        <input type="hidden" name="fileId" value="{{ file.getId() }}">
         <input type="hidden" name="parentId" value="NULL">
         <input type="hidden" name="notjs">
         <textarea name="comment" id="newCommentsText" required></textarea>
@@ -94,30 +89,4 @@
         <p>[[text]]</p>
     </script>
     <script src="/js/forFiles/file.js"></script>
-</body>
-</html>
-
-{% macro printComments(comments, fileId) %}
-    {% for comment in comments %}
-        <div class="comment">
-            <input type="hidden" name="commentId" value="{{ comment.id }}">
-            <h5>{{ comment.date }}</h6>
-            <p>{{ comment.text|nl2br }}</p>
-            <label class="replyBlock">
-                <input type="radio" name="radio" class="replyRadio">
-                <p class="openReplyButton" onclick="openReply(this)">Ответить</p>
-                <p class="closeReplyButton" onclick="closeReply(this)">Закрыть</p>
-                <form method="post" action="/addComment" class="replyComment">
-                    <input type="hidden" name="fileId" value="{{ fileId }}">
-                    <input type="hidden" name="parentId" value="{{ comment.id }}">
-                    <input type="hidden" name="notjs">
-                    <textarea class="replyCommentField" name="comment" required></textarea>
-                    <button>Отправить</button>
-                </form>
-            </label>
-            {% if comment.children|length > 0 %}
-                {{ _self.printComments(comment.children, fileId) }}
-            {% endif %}
-        </div>
-    {% endfor %}
-{% endmacro %}
+{% endblock %}

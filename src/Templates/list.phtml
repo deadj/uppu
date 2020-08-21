@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
-    <title>Uppu</title>
-    <link rel="stylesheet" href="css/main.css">
+{% extends "DuplicateItems/base.html" %}
+
+{% block head %}
+    {{ parent() }}
     <link rel="stylesheet" href="css/list.css">
-</head>
-<body>
-    {% include 'DuplicateItems/header.phtml' %}
+{% endblock %}
+
+{% block content%}
     {% if filesList %}
         <table>
             <tr>
@@ -19,7 +14,6 @@
                 <th>Размер</th>
                 <th>Скачать</th>
             </tr>
-            
                 {% for file in filesList %}
                     {% if loop.index % 2 != 0 %}
                         <tr class="trSecond">
@@ -40,5 +34,6 @@
     {% else %}
         <h3>Упс... Файлов нет :(</h3>
     {% endif %}
-</body>
-</html>
+{% endblock %}
+
+

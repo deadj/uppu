@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+    <head>
+        {% block head %}
+            <meta charset="UTF-8">
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+            <title>Uppu</title>
+            <link rel="stylesheet" href="/css/main.css">
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <h1><a href="/">Uppu</a></h1>
+            <form class="searchBlock" action="/search" method="GET">
+                <input type="text" name="text">
+                <input type="submit" value="Искать">
+            </form>
+            <a href="/list"><h3>Список последних файлов</h3></a>
+        </header>  
+        {% block content %}{% endblock %}
+    </body>
+</html>

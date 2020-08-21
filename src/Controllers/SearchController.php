@@ -7,12 +7,12 @@ class SearchController
 	private SphinxSearch $sphinxSearch;
 	private FilesTable $filesTable;
 
-	public function __construct(\Slim\Views\Twig $view, $db)
+	public function __construct(\Slim\Views\Twig $view, $db, SphinxSearch $sphinxSearch, FilesTable $filesTable)
 	{
 		$this->view = $view;
 		$this->db = $db;
-		$this->sphinxSearch = new SphinxSearch();
-		$this->filesTable = new FilesTable($db);
+		$this->sphinxSearch = $sphinxSearch;
+		$this->filesTable = $filesTable;
 	}
 
 	public function search($request, $response)

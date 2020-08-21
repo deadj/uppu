@@ -38,19 +38,5 @@ class Helper
 
         return preg_replace('/[.].*/', '', $filename);
     }
-
-    public function deleteErrorFiles($request, $response, $args): void
-    {
-        $filesTable = new FilesTable($this->db);
-        $filesList = $filesTable->getErrorFilesList();
-
-        $commentsTable = new CommentsTable($this->db);
-        
-        foreach ($filesList as $file) {
-            $commentsTable->deleteListForFile($file->getNameId());
-            unlink($file->getLink());
-            $filesTable->deleteFile($file->getNameId());
-        }
-    }
 }
 

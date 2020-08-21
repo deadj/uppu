@@ -10,7 +10,7 @@ class CommentsTable
 	}
 
 	public function addComment(
-		string $fileId, 
+		int $fileId, 
 		string $text, 
 		string $date, 
 		$parentId
@@ -50,7 +50,7 @@ class CommentsTable
 		return $list;
 	}
 
-	public function getListForFile(string $fileId): array
+	public function getListForFile(int $fileId): array
 	{
 		$statement = $this->pdo->prepare("SELECT * FROM comments WHERE fileId = :fileId");
 		$statement->bindValue(':fileId', $fileId);
@@ -65,7 +65,7 @@ class CommentsTable
 		return $list;
 	}
 
-	public function deleteListForFile(string $fileId): void
+	public function deleteListForFile(int $fileId): void
 	{
 		$statement = $this->pdo->prepare("DELETE FROM comments WHERE fileId = :fileId");
 		$statement->bindValue(':fileId', $fileId);

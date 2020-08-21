@@ -3,14 +3,14 @@
 class Comment
 {
 	private int $id;
-	private string $fileId;
+	private int $fileId;
 	private string $text;
 	private string $date;
 	private ?int $parentId;
 
 	public function __construct(
 		int $id,
-		string $fileId,
+		int $fileId,
 		string $text,
 		string $date,
 		$parentId

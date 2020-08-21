@@ -7,13 +7,13 @@ class FileController
 	private FilesTable $filesTable;
 	private CommentsTable $commentsTable;
 
-	public function __construct(\Slim\Views\Twig $view, $db)
+	public function __construct(\Slim\Views\Twig $view, $db, FilesTable $filesTable, CommentsTable $commentsTable)
 	{
 		$this->view = $view;
 		$this->db = $db;
 
-		$this->filesTable = new FilesTable($db);
-		$this->commentsTable = new CommentsTable($db);
+		$this->filesTable = $filesTable;
+		$this->commentsTable = $commentsTable;
 	}
 
 	public function printPage($request, $response, $args)
@@ -23,23 +23,13 @@ class FileController
 		$file = $this->filesTable->getFileThroughNameId($nameId);
 
 		if ($file === null) {
-			return $this->view->render($response, '404.html');
+			return $this->view->render($response, '404.html')->withStatus(404);
 		} 
 
-		$comments = $this->commentsTable->getListForFile($nameId);
+		$comments = $this->commentsTable->getListForFile($file->getId());
 
 		$dataForView = array(
-			'filesData' => array(
-				'nameId' => $file->getNameId(),
-				'name' => $file->getName(),
-				'link' => $file->getLink(),
-				'comment' => $file->getComment(),
-				'date' => $file->getDate(),
-				'type' => $file->getType(),
-				'size' => $file->getSize(),
-				'metadata' => $file->getMetadata(),
-				'uploadIsDone' => $file->getUploadIsDone()
-			),
+			'file' => $file,
 			'comments' => $this->createCommentsTree($comments)
 		);
 
