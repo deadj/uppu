@@ -30,6 +30,18 @@ $container['notFoundHandler'] = function ($c) {
     };
 };
 
+$getPreviewLinkFunction = new Twig_SimpleFunction('getPreviewLink', function(string $link, string $nameId){
+    $extension = pathinfo($link, PATHINFO_EXTENSION);
+
+    if ($extension != "png" && $extension != "gif" && $extension != "jpeg") {
+        $extension = "jpeg";
+    } 
+
+    return "files/imgPreviews/$nameId.$extension"; 
+});
+
+$container->get('view')->getEnvironment()->addFunction($getPreviewLinkFunction);
+
 $container['FilesTable'] = function($c){
     $db = $c->get('db');
     return new FilesTable($db);

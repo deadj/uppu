@@ -85,6 +85,7 @@ class MainController
 
                 $link = preg_replace('/[.]\\w*/', '.mp4', $link);
             } else {
+                $this->helper->createImagePreview($link, $nameId);
                 $metadata = MediaInfo::getMetadata($type, $link);
                 $size = MediaInfo::getSize($link);
                 $uploadIsDone = File::STATUS_DONE;

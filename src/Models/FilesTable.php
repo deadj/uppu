@@ -34,8 +34,10 @@ class FilesTable
         return $this->createFile($result);
     }
 
-    public function getFilesArrayThroughId(string $stringId): array
+    public function getFilesArrayThroughId(array $filesId): array
     {
+        $stringId = $this->convertArrayIdToString($filesId);
+        
         $statement = $this->pdo->prepare("SELECT * FROM files WHERE id IN " . $stringId);
         $statement->execute();
 
@@ -90,6 +92,8 @@ class FilesTable
         $result = $statement->fetch(PDO::FETCH_OBJ);
 
         return $result->id;
+
+        // return $this->pdo->lastInsertId();
     }
 
     public function getFilesList(): array
@@ -169,5 +173,13 @@ class FilesTable
         );
 
         return $file;       
+    }
+
+    private function convertArrayIdToString(array $filesId): string
+    {
+        $stringId = implode(", ", $filesId);
+        $stringId = "(" . $stringId . ")";
+
+        return $stringId;    
     }
 }

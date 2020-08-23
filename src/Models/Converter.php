@@ -19,8 +19,7 @@ class Converter
 
 		$filesTable = new FilesTable($this->pdo);
 
-	    $nameId = preg_replace('~files\\/\\d{2}_\\d{2}_\\d{2}\\/~ui',"", $link);
-	    $nameId = preg_replace('/[.]\\S*/', "", $nameId);
+	    $nameId = $this->getNameIdFromLink($link);
 	    $linkForConvert = "public/" . $link;
 	    $newLinkForConvert = preg_replace('/[.]\\w*/', 'buf.mp4', $linkForConvert);
 
@@ -38,5 +37,13 @@ class Converter
 
     	unlink($linkForConvert);
     	rename($newLinkForConvert, str_replace('buf', '', $newLinkForConvert));
+	}
+
+	private function getNameIdFromLink(string $link): string
+	{
+	    $nameId = preg_replace('~files\\/\\d{2}_\\d{2}_\\d{2}\\/~ui',"", $link);
+	    $nameId = preg_replace('/[.]\\S*/', "", $nameId);
+
+	    return $nameId;		
 	}				
 }

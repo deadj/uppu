@@ -25,24 +25,9 @@ class SearchController
 		$filesArray = array();
 
 		if (!empty($filesId)) {
-			$filesArray = $this->filesTable->getFilesArrayThroughId($this->convertArrayIdToString($filesId));
+			$filesArray = $this->filesTable->getFilesArrayThroughId($filesId);
 		}
 
 		return $this->view->render($response, 'list.phtml', ['filesList' => $filesArray]); 
-	}
-
-	private function convertArrayIdToString(array $filesId): string
-	{
-        $stringId = "(";
-
-        foreach ($filesId as $key => $id) {
-            if ($key != count($filesId) - 1) {
-                $stringId = $stringId . $id . ", ";
-            } else {
-                $stringId = $stringId . $id . ")";
-            }
-        }	
-
-        return $stringId;	
 	}
 }

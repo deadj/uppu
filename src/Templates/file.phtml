@@ -23,7 +23,7 @@
                     {% elseif file.type == "audio" %}
                         <audio src="/{{ file.getLink() }}" controls></audio>
                     {% elseif file.type == "image" %}
-                        <img id="imgFile" src="/{{ file.getLink() }}">
+                        <img id="imgFile" src="/{{ getPreviewLink(file.getLink, file.getNameId) }}">
                     {% endif %}
                 </div>
                 <table class="fileData">
