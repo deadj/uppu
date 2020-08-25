@@ -62,22 +62,26 @@ $container['GearmanCLient'] = function($c){
     return new GearmanCLient();
 };
 
-$container['MainController'] = function($c) {
-    $view = $c->get("view");
-    $db = $c->get("db");
+$container['Uploader'] = function($c){
     $sphinxSearch = $c->get('SphinxSearch');
     $filesTable = $c->get('FilesTable');
-    $gearmanCLient = $c->get('GearmanCLient');
+    $gearmanClient = $c->get('GearmanCLient');
+    $helper = $c->get('Helper');
+
+    return new Uploader(
+        $helper,
+        $gearmanClient,
+        $sphinxSearch,
+        $filesTable
+    );
+};
+
+$container['MainController'] = function($c) {
+    $view = $c->get("view");
+    $uploader = $c->get('Uploader');
     $helper = $c->get('Helper'); 
 
-    return new MainController(
-        $view, 
-        $db, 
-        $sphinxSearch, 
-        $filesTable, 
-        $gearmanCLient,
-        $helper
-    );
+    return new MainController($view, $uploader, $helper);
 };
 
 $container['FileController'] = function($c){
@@ -107,8 +111,7 @@ $container['SearchController'] = function($c){
 };
 
 $container['Helper'] = function($c){
-    $db = $c->get("db");
-    return new Helper($db);
+    return new Helper();
 };
 
 $app->get('/[notify={notify}]', \MainController::class . ':printPage');

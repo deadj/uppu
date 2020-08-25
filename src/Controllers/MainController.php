@@ -5,28 +5,16 @@ use Slim\Http\UploadedFile;
 class MainController
 {
     private $view;
-    private $db;
-    private string $fileDirectory = 'files/';
-    private FilesTable $filesTable;
-    private SphinxSearch $sphinxSearch;
-    private getID3 $getID3;
-    private GearmanCLient $gearmanClient;
+    private $uploader;
     private Helper $helper;
 
     public function __construct(
         \Slim\Views\Twig $view, 
-        $db, 
-        SphinxSearch $sphinxSearch, 
-        FilesTable $filesTable, 
-        GearmanCLient $gearmanClient,
+        Uploader $uploader,
         Helper $helper
     ){
         $this->view = $view;
-        $this->db = $db;
-        $this->sphinxSearch = $sphinxSearch;
-        $this->filesTable = $filesTable;
-        $this->getID3 = new getID3;
-        $this->gearmanClient = $gearmanClient;
+        $this->uploader = $uploader;
         $this->helper = $helper;
     }
 
@@ -44,6 +32,8 @@ class MainController
     public function uploadFile($request, $response)
     {
         $data = $request->getParsedBody();
+        $name = $data['name'];
+        $comment = $data['comment'];
 
         if ($data['name'] == "") {
             return $response->withRedirect("http://localhost/notify=emptyName");
@@ -53,54 +43,12 @@ class MainController
         $uploadedFile = $uploadedFiles['file'];
 
         if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-            $folderPath = $this->fileDirectory . date("m_d_y");
-            $extension = $this->getExtension($uploadedFile->getClientFilename());
-
-            if (!file_exists($folderPath)) {
-                mkdir($folderPath);
-            }
-            
-            $nameId = $this->helper->moveUploadedFile($folderPath . "/", $uploadedFile, $extension);
-            $name = strval(trim($data['name']));
-            $type = $this->getFileType($uploadedFile->getClientMediaType());
-            $link = $this->createFilesLink($folderPath, $nameId, $uploadedFile->getClientFilename());
-
-            if ($type == File::TYPE_VIDEO) {
-                $fileData = $this->getID3->analyze($link);
-
-                if (!isset($this->fileData['video']['fourcc_lookup']) || 
-                    !preg_match('/H[.]264/iu', $this->fileData['video']['fourcc_lookup'])) {
-
-                    $this->gearmanClient->addServer();
-                    $res = $this->gearmanClient->doBackground('convertVideo', $link);
-
-                    $metadata = MediaInfo::getNullMetadataForVideo();
-                    $size = 0;
-                    $uploadIsDone = File::STATUS_NULL;
-                } else {
-                    $metadata = MediaInfo::getMetadata($type, $link);
-                    $size = MediaInfo::getSize($link);
-                    $uploadIsDone = File::STATUS_DONE;
-                }
-
-                $link = preg_replace('/[.]\\w*/', '.mp4', $link);
-            } else {
-                $this->helper->createImagePreview($link, $nameId);
-                $metadata = MediaInfo::getMetadata($type, $link);
-                $size = MediaInfo::getSize($link);
-                $uploadIsDone = File::STATUS_DONE;
-            }
-            
-            if ($extension == "php" || $extension == "phtml") {
-                $link = preg_replace('/[.](php|phtml)$/', '.txt', $link);
-            }
-
-            $comment = trim(mb_substr(strval($data['comment']), 0, 30));
-            $date = date("Y-m-d H:i:s");
-            
-            $file = new File(NULL, $nameId, $name, $link, $comment, $type, $date, $size, $metadata, $uploadIsDone);
-            $fileId = $this->filesTable->addFile($file);
-            $this->sphinxSearch->add($fileId, $file);
+            $nameId = $this->uploader->uploadFile(
+                $uploadedFile->file,
+                $uploadedFile->getClientFilename(),
+                $name, 
+                $comment
+            );
 
             if (isset($data['notjs'])) {
                 return $response->withRedirect("http://localhost/file/" . $nameId);
@@ -112,9 +60,9 @@ class MainController
         }
     }
 
-    private function createFilesLink(string $folderPath, string $nameId, string $clientFilename): string
+    private function createFilesLink(string $folderPath, string $nameId, string $extension): string
     {
-        return $folderPath . "/" . $nameId . '.' . preg_replace('/.*[.]/', '', $clientFilename);
+        return $folderPath . "/" . $nameId . '.' . $extension;
     }
 
     private function getExtension(string $filename): string

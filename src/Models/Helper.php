@@ -20,41 +20,6 @@ class Helper
         Helper::EXTENSION_WEBP
     );
 
-    private $db;
-
-    public function __construct($db)
-    {
-        $this->db = $db;
-    }
-
-	public function moveUploadedFile(
-        string $directory, 
-        UploadedFile $uploadedFile, 
-        string $extension
-    ): string
-    {
-        if ($extension == "php" || $extension == "phtml") {
-            $extension = "txt";
-        }
-        
-        $basename = bin2hex(random_bytes(8));
-        $filename = sprintf('%s.%0.8s', $basename, $extension);
-
-        $tusClient = new \TusPhp\Tus\Client('http://tus.com/TusServer.php');
-        $tusClient->setApiPath('http://tus.com/TusServer.php');
-
-        $uploadKey = uniqid();
-        $tusClient->setKey($uploadKey)->file($uploadedFile->file, $filename);
-
-        $fileSize = $tusClient->getFileSize();
-
-        while ($tusClient->getOffset() != $fileSize) {
-            $tusClient->upload(5000000);
-        }
-
-        return preg_replace('/[.].*/', '', $filename);
-    }
-
     public function createImagePreview(string $link, string $nameId): void 
     {   
         $link = '../public/' . $link;
@@ -86,9 +51,9 @@ class Helper
             if ($fileExtension == Helper::EXTENSION_PNG) {
                 imagepng($preview, $savePath . '.png');
             } elseif ($fileExtension == Helper::EXTENSION_GIF) {
-                imagegif($preview, $savePath . 'gif');
+                imagegif($preview, $savePath . '.gif');
             } else {
-                imagejpeg($preview, $savePath . 'jpeg');     
+                imagejpeg($preview, $savePath . '.jpeg');     
             }
         } 
     }
